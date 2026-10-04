@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { CommandProvider } from "@/components/command/command-provider";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
 import { SkipLink } from "@/components/layout/skip-link";
 import { ThemeScript } from "@/components/theme/theme-script";
 import { Toaster } from "@/components/ui/toaster";
@@ -41,7 +44,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
         <SkipLink />
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          <CommandProvider>
+            <SiteHeader />
+            <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
+              {children}
+            </main>
+            <SiteFooter />
+          </CommandProvider>
+        </TooltipProvider>
         <Toaster />
       </body>
     </html>

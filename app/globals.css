@@ -117,6 +117,8 @@
   --animate-fade-up: fade-up var(--dur-small) var(--ease-standard);
   --animate-collapse-down: collapse-down var(--dur-medium) var(--ease-standard);
   --animate-collapse-up: collapse-up var(--dur-medium) var(--ease-standard);
+  --animate-sheet-in: sheet-in var(--dur-medium) var(--ease-emphasized);
+  --animate-sheet-out: sheet-out var(--dur-small) var(--ease-exit);
 
   @keyframes fade-in {
     from {
@@ -138,6 +140,16 @@
     from {
       opacity: 0;
       translate: 0 4px;
+    }
+  }
+  @keyframes sheet-in {
+    from {
+      translate: 100% 0;
+    }
+  }
+  @keyframes sheet-out {
+    to {
+      translate: 100% 0;
     }
   }
   @keyframes collapse-down {

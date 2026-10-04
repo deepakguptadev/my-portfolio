@@ -18,10 +18,8 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ContentRequired } from "@/components/content/content-required";
 import { SpecRows } from "@/components/content/spec-rows";
-import { Container } from "@/components/layout/container";
 import { ModuleHeader } from "@/components/layout/module-header";
 import { Section } from "@/components/layout/section";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
 import {
   Accordion,
   AccordionContent,
@@ -107,14 +105,7 @@ export default function DesignSystemPage() {
   const colors = parseColorTokens(readFileSync(join(process.cwd(), "styles/tokens.css"), "utf8"));
 
   return (
-    <main id="main" tabIndex={-1} className="outline-none">
-      <div className="sticky top-0 z-sticky border-b border-line bg-canvas/85 backdrop-blur-[8px]">
-        <Container width="wide" className="flex h-16 items-center justify-between">
-          <p className="font-mono text-small text-fg-secondary">/design-system</p>
-          <ThemeToggle />
-        </Container>
-      </div>
-
+    <div>
       <Section width="wide" ruled={false} className="pb-0 md:pb-0 xl:pb-0">
         <ModuleHeader
           level={1}
@@ -495,6 +486,6 @@ export default function DesignSystemPage() {
           }))}
         />
       </Section>
-    </main>
+    </div>
   );
 }

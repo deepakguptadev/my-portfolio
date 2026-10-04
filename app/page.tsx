@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 // Temporary shell until the home modules land (roadmap M5).
 export default function Home() {
   return (
-    <main id="main" tabIndex={-1} className="flex flex-1 items-center py-24 outline-none">
+    <div className="flex flex-1 items-center py-24">
       <Container width="wide">
         <p className="mb-6 eyebrow text-accent">Senior Software Engineer</p>
         <h1 className="max-w-[14ch] text-display text-fg">
@@ -23,6 +23,6 @@ export default function Home() {
           </div>
         )}
       </Container>
-    </main>
+    </div>
   );
 }
