@@ -12,6 +12,8 @@ import { Badge, Tag } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { engineering } from "@/content/engineering";
 import { profile } from "@/content/profile";
+import { JsonLd } from "@/components/seo/json-ld";
+import { personJsonLd } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -39,6 +41,7 @@ export default function AboutPage() {
 
   return (
     <>
+      <JsonLd data={personJsonLd()} />
       <PageHeader
         index="01"
         path="/about"

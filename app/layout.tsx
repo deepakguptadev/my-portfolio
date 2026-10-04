@@ -6,7 +6,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SkipLink } from "@/components/layout/skip-link";
 import { ThemeScript } from "@/components/theme/theme-script";
 import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Analytics } from "@/components/seo/analytics";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -30,6 +30,8 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  openGraph: { siteName: siteConfig.name, type: "website", locale: "en_US" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -44,16 +46,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
         <SkipLink />
-        <TooltipProvider>
-          <CommandProvider>
-            <SiteHeader />
-            <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
-              {children}
-            </main>
-            <SiteFooter />
-          </CommandProvider>
-        </TooltipProvider>
+        <CommandProvider>
+          <SiteHeader />
+          <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
+            {children}
+          </main>
+          <SiteFooter />
+        </CommandProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );

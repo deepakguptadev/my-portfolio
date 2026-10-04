@@ -15,6 +15,8 @@ import { WorkflowDiagram } from "@/components/viz/workflow-diagram";
 import { getGraph } from "@/content/graphs";
 import { displayClient, getProject, getProjectSlugs } from "@/lib/content";
 import { formatPeriod } from "@/lib/format";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -32,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: project.meta.title,
     description: project.meta.summary,
     path: `/projects/${project.slug}`,
+    image: `/projects/${project.slug}/opengraph-image`,
   });
 }
 
@@ -86,6 +89,12 @@ export default async function CaseStudyPage({ params }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Projects", path: "/projects" },
+          { name: meta.title, path: `/projects/${project.slug}` },
+        ])}
+      />
       <PageHeader
         index="03"
         path={`/projects/${project.slug}`}

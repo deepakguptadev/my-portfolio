@@ -8,6 +8,8 @@ import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge, Tag } from "@/components/ui/badge";
 import { getNote, getNotes, getNoteSlugs, isPublic } from "@/lib/content";
+import { JsonLd } from "@/components/seo/json-ld";
+import { articleJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -26,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: note.meta.title,
       description: note.meta.summary,
       path: `/notes/${note.slug}`,
+      image: `/notes/${note.slug}/opengraph-image`,
     }),
     // Samples and drafts stay out of search results.
     robots: isPublic(note) ? undefined : { index: false, follow: true },
@@ -46,6 +49,22 @@ export default async function NotePage({ params }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Notes", path: "/notes" },
+          { name: meta.title, path: `/notes/${note.slug}` },
+        ])}
+      />
+      {isPublic(note) && meta.publishedAt && (
+        <JsonLd
+          data={articleJsonLd({
+            title: meta.title,
+            summary: meta.summary,
+            path: `/notes/${note.slug}`,
+            publishedAt: meta.publishedAt,
+          })}
+        />
+      )}
       {/* CSS scroll-driven progress bar; no JavaScript. Hidden where unsupported. */}
       <div aria-hidden className="reading-progress" />
       <PageHeader

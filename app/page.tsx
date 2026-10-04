@@ -8,10 +8,14 @@ import { NotesPreview } from "@/components/home/notes-preview";
 import { Practice } from "@/components/home/practice";
 import { RecruiterSnapshot } from "@/components/home/recruiter-snapshot";
 import { SelectedProjects } from "@/components/home/selected-projects";
+import { JsonLd } from "@/components/seo/json-ld";
+import { personJsonLd, websiteJsonLd } from "@/lib/json-ld";
 
 export default function Home() {
   return (
     <>
+      <JsonLd data={personJsonLd()} />
+      <JsonLd data={websiteJsonLd()} />
       <Hero />
       <RecruiterSnapshot />
       <EngineeringDna />
