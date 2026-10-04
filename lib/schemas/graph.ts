@@ -58,6 +58,8 @@ export const systemGraph = z
     lenses: z.array(graphLens).optional(),
     /** Ordered edge ids for the "trace a request" stepper. */
     trace: z.array(z.string()).optional(),
+    /** Stepper label when the trace follows something other than a request. */
+    traceLabel: z.string().optional(),
   })
   .superRefine((graph, ctx) => {
     const nodeIds = new Set<string>();

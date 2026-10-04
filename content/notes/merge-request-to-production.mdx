@@ -1,0 +1,116 @@
+export const metadata = {
+  title: "From Merge Request to Production: A Pipeline You Can Trust",
+  summary:
+    "Review, automated checks, one build promoted through staging, validation after release and monitoring — the delivery path that keeps main releasable.",
+  tags: ["CI/CD", "GitLab", "Docker", "DevOps"],
+  status: "draft",
+  related: [{ label: "Delivery Pipeline lab", href: "/architecture?module=delivery" }],
+};
+
+## Shipping is part of the feature
+
+A feature isn't done when the code compiles. It's done when it runs in production, behaves as expected, and the team can see that it does. A good pipeline makes that path boring: every change travels it the same way, and every step can stop a bad change.
+
+## The path every change takes
+
+1. A short-lived **feature branch** off `main`.
+2. A **merge request** with peer review.
+3. An automated **pipeline**: lint, type checks, tests, build.
+4. A **container image**, built once and tagged with the commit.
+5. A deploy to **staging**, validated there.
+6. **Promotion** of the same image to production.
+7. **Monitoring** after release, feeding what it finds into the next change.
+
+## The pipeline is the gate
+
+A red pipeline blocks the merge, so `main` is always releasable. A trimmed-down GitLab CI configuration:
+
+```yaml title=".gitlab-ci.yml"
+stages: [verify, build, deploy]
+
+verify:
+  stage: verify
+  image: node:22
+  script:
+    - npm ci
+    - npm run lint
+    - npm run typecheck
+    - npm test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+build-image:
+  stage: build
+  image: docker:27
+  services: [docker:27-dind]
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy-staging:
+  stage: deploy
+  environment: staging
+  script:
+    - ./scripts/deploy.sh staging "$CI_COMMIT_SHA"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy-production:
+  stage: deploy
+  environment: production
+  needs: [deploy-staging]
+  script:
+    - ./scripts/deploy.sh production "$CI_COMMIT_SHA"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+```
+
+Production is a manual step that can only run after staging has deployed, and it deploys the exact commit staging received.
+
+## Build once, promote the same artifact
+
+Rebuilding for each environment means production runs something that was never tested. Instead, the image is built once, tagged with the commit SHA, and the same tag moves from staging to production. Environments differ only in configuration, supplied at runtime.
+
+## Roll out gradually, then validate
+
+On Kubernetes, a rolling update only sends traffic to new pods once they report ready, so a broken release stalls instead of taking the service down:
+
+```yaml title="deployment.yaml (excerpt)"
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    spec:
+      containers:
+        - name: api
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+```
+
+After the rollout, validate production directly: smoke-test the critical journeys, and watch error rates, latency and throughput in your monitoring tool (New Relic, in my case) against the previous release.
+
+## When something goes wrong
+
+- **Roll back** by redeploying the previous image tag. Because every release is an immutable image, this takes minutes.
+- **Fix forward** when the issue is small and well understood.
+- **Close the loop**: add the test or alert that would have caught it, so the pipeline gets stronger with every incident.
+
+## A short checklist
+
+- No direct pushes to `main`; every change goes through a reviewed merge request.
+- The pipeline runs on every merge request and blocks on failure.
+- One immutable image per commit, promoted, never rebuilt.
+- Production deploys are reversible in minutes.
+- Someone checks production after every release.

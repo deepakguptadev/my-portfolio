@@ -1,5 +1,11 @@
+import { readdirSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+
+// Every note, so code blocks and tables in new articles get contrast and overflow checks.
+const notes = readdirSync("content/notes")
+  .filter((file) => file.endsWith(".mdx"))
+  .map((file) => `/notes/${file.replace(/\.mdx$/, "")}`);
 
 const pages = [
   "/about",
@@ -10,7 +16,7 @@ const pages = [
   "/engineering",
   "/skills",
   "/notes",
-  "/notes/nextjs-rendering-strategies",
+  ...notes,
   "/resume",
   "/contact",
 ];
@@ -63,7 +69,7 @@ test.describe("module pages", () => {
       "aria-selected",
       "true",
     );
-    await page.getByRole("tab", { name: "API Architecture" }).click();
+    await page.getByRole("tab", { name: "Backend & APIs" }).click();
     await expect(page).toHaveURL(/module=api/);
   });
 

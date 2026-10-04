@@ -57,8 +57,14 @@ export const mdxComponents: MDXComponents = {
     />
   ),
   hr: () => <hr className="my-12 border-line" />,
+  // Focusable region, like DataTable, so keyboard users can scroll wide tables.
   table: ({ className, ...props }) => (
-    <div className="my-6 overflow-x-auto rounded-md border border-line">
+    <div
+      tabIndex={0}
+      role="region"
+      aria-label="Table"
+      className="my-6 overflow-x-auto rounded-md border border-line"
+    >
       <table className={cn("w-full text-left text-small", className)} {...props} />
     </div>
   ),

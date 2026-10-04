@@ -43,10 +43,16 @@ export const profile = defineContent("profile", profileSchema, {
     "AI-Assisted Engineering",
   ],
   heroBadges: ["7+ Years Experience", "React.js", "Next.js", "Node.js", "TypeScript", "AWS"],
+  highlights: [
+    { value: "7+ yrs", label: "Building production web applications" },
+    { value: "~30–35%", label: "Improvement in application performance at Nagarro" },
+    { value: "~20–25%", label: "Less development rework from reusable component libraries" },
+    { value: "4 yrs", label: "At Nagarro, from Engineer to Senior Software Engineer" },
+  ],
   education: {
     degree: "B.Tech",
     field: "Electronics & Communication Engineering",
-    year: "2019",
+    period: { start: "2015", end: "2019" },
     institution: "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
   },
   story: [

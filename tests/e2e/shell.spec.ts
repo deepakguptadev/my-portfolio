@@ -1,7 +1,13 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 const isMobile = (name: string) => name === "mobile";
+
+/** Horizontal scale of the scroll progress bar: 0 = empty, 1 = full. */
+const progressScale = (page: Page) =>
+  page
+    .locator(".scroll-progress")
+    .evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).a);
 
 test.describe("site shell", () => {
   test("skip link is the first focusable element and targets main", async ({ page }) => {
@@ -70,6 +76,74 @@ test.describe("site shell", () => {
     await page.keyboard.press("Escape");
     await expect(drawer).toBeHidden();
     await expect(menu).toBeFocused();
+  });
+
+  test("a page opened from the navigation starts at the top", async ({ page }, info) => {
+    await page.goto("/about");
+    // A short scroll: the case where Next.js would otherwise keep the position.
+    await page.evaluate(() => window.scrollTo(0, 300));
+    if (isMobile(info.project.name)) {
+      await page.getByRole("button", { name: "Open menu" }).click();
+      await page
+        .getByRole("dialog")
+        .getByRole("link", { name: /Experience/ })
+        .click();
+    } else {
+      await page
+        .getByRole("navigation", { name: "Primary" })
+        .getByRole("link", { name: "Experience", exact: true })
+        .click();
+    }
+    await page.waitForURL("**/experience");
+    await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  });
+
+  test("switching tabs within a page keeps the scroll position", async ({ page }) => {
+    await page.goto("/resume");
+    await page.evaluate(() => window.scrollTo(0, 250));
+    await page.getByRole("tab", { name: "Skills" }).click();
+    await expect(page).toHaveURL(/tab=skills/);
+    expect(await page.evaluate(() => window.scrollY)).toBe(250);
+  });
+
+  test("footer reaches every module and its back-to-top link returns to the top", async ({
+    page,
+  }) => {
+    await page.goto("/about");
+    const footer = page.getByRole("navigation", { name: "Footer" });
+    for (const name of ["About", "Projects", "Skills", "Resume", "Contact"]) {
+      await expect(footer.getByRole("link", { name: new RegExp(name) })).toBeVisible();
+    }
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await page.getByRole("link", { name: "Back to top" }).click();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    await expect(page.locator("main#main")).toBeFocused();
+  });
+
+  test("scroll progress is empty at the top and full at the bottom", async ({ page }) => {
+    await page.goto("/about");
+    await expect.poll(() => progressScale(page)).toBeLessThan(0.01);
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect.poll(() => progressScale(page)).toBeGreaterThan(0.99);
+  });
+
+  test("scroll progress stays empty on a page too short to scroll", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 4000 });
+    await page.goto("/does-not-exist");
+    expect(
+      await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight),
+    ).toBe(true);
+    expect(await progressScale(page)).toBe(0);
+  });
+
+  test("scroll progress is hidden when reduced motion is requested", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/about");
+    const display = await page
+      .locator(".scroll-progress")
+      .evaluate((el) => getComputedStyle(el).display);
+    expect(display).toBe("none");
   });
 
   test("unknown routes render the module-not-found page inside the shell", async ({ page }) => {

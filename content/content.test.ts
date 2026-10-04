@@ -13,17 +13,25 @@ describe("content", () => {
     expect(profile.name).toBe("Deepak Gupta");
     expect(experience.length).toBeGreaterThan(0);
     expect(skills.length).toBe(9);
-    expect(Object.keys(graphs)).toHaveLength(8);
+    expect(Object.keys(graphs)).toHaveLength(9);
     expect(architecture.modules.map((m) => m.id)).toEqual([
       "react",
       "nextjs",
       "micro-frontends",
       "api",
+      "delivery",
     ]);
   });
 
   it("never invents performance measurements", () => {
     expect(engineering.performance.measurements).toEqual([]);
+  });
+
+  it("backs every percentage highlight with a recorded achievement", () => {
+    const achievements = experience.flatMap((role) => role.achievements).join(" ");
+    for (const { value } of profile.highlights.filter((h) => h.value.includes("%"))) {
+      expect(achievements).toContain(value.replace(/^~/, ""));
+    }
   });
 
   it("flags every role that is missing facts", () => {

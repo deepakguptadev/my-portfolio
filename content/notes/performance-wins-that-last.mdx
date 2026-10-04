@@ -1,0 +1,67 @@
+export const metadata = {
+  title: "Frontend Performance Wins That Last",
+  summary:
+    "Measure first, ship less JavaScript, render on the server where it helps, stop needless re-renders — and add a budget so the gains don't quietly erode.",
+  tags: ["Performance", "React", "Next.js", "Core Web Vitals"],
+  status: "draft",
+  related: [{ label: "Performance Lab", href: "/engineering#performance" }],
+};
+
+At Nagarro, combining the techniques below improved application performance by roughly 30–35%. None of them is exotic. The work is choosing the one that matches the bottleneck you actually have.
+
+## 1. Measure before you change anything
+
+Start from a slow user journey, not a hunch. Field data (Core Web Vitals: LCP, INP and CLS from real users) tells you _where_ it hurts; lab tools such as Lighthouse, the browser's Performance panel and the React Profiler tell you _why_.
+
+Write down the baseline. Without it, you can't tell a win from noise.
+
+## 2. Ship less JavaScript
+
+Every kilobyte has to be downloaded, parsed and executed before the page responds. Split code by route, and lazy-load heavy widgets that aren't needed for the first paint:
+
+```tsx title="report-page.tsx"
+import dynamic from "next/dynamic";
+
+const ChartPanel = dynamic(() => import("./chart-panel"), {
+  loading: () => <ChartSkeleton />,
+});
+```
+
+Then look at the bundle itself. A bundle analyzer often shows a whole date or utility library shipped for one function, or a dependency pulled into every page by a shared import.
+
+## 3. Render where it's cheapest
+
+Rendering strategy is a per-route decision:
+
+- **Static (SSG)** for pages that are the same for everyone, served from a CDN.
+- **ISR** for pages that change occasionally, regenerated in the background.
+- **Server rendering (SSR) or Server Components** for personalized or data-heavy pages, so the browser receives HTML instead of a loading spinner and a waterfall of requests.
+
+## 4. Stop re-rendering what didn't change
+
+The React Profiler shows which components render, how often and why. Common fixes, applied only where the profiler proves a problem:
+
+- Keep state as close as possible to where it's used, so updates don't ripple through the tree.
+- Split large contexts, so a change to one value doesn't re-render every consumer.
+- Memoize expensive derived values and stable callbacks passed to memoized children.
+- Virtualize long lists and tables.
+
+```tsx
+const rows = useMemo(() => sortRows(data, sortKey), [data, sortKey]);
+```
+
+## 5. Fetch data efficiently
+
+Server data belongs in a query cache (such as React Query) that deduplicates requests and serves cached results instantly. Start independent requests in parallel rather than one after another, and prefetch the next likely screen on hover or focus.
+
+## 6. Keep the gains with a budget
+
+Performance erodes one reasonable-looking commit at a time. A budget in CI turns it into a test: fail the build when the JavaScript shipped to a key page, or its LCP and CLS in a lab run, cross agreed limits. This site does exactly that with Playwright on every change.
+
+## A short checklist
+
+- A baseline exists before any optimization starts.
+- Heavy components are lazy-loaded; routes are split.
+- Each route renders with the cheapest strategy that meets its freshness needs.
+- Memoization is applied where the profiler shows a cost, not everywhere.
+- A performance budget fails the build when it's exceeded.

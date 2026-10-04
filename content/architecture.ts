@@ -101,11 +101,15 @@ export const architecture = defineContent("architecture", architectureSchema, {
     },
     {
       id: "api",
-      label: "API Architecture",
+      label: "Backend & APIs",
       graphId: "api-architecture",
       intro:
-        "A request should be validated and authenticated before it reaches business logic, and business logic should not know whether it was called over HTTP.",
+        "In a Node.js service — Express or NestJS — a request should be validated and authenticated before it reaches business logic, and business logic should not know whether it was called over HTTP.",
       concepts: [
+        {
+          title: "REST or GraphQL",
+          body: "REST for resource-shaped, cacheable endpoints; GraphQL when several clients need different shapes of the same data — with generated types so the schema and the frontend can't drift apart.",
+        },
         {
           title: "Validate at the edge",
           body: "Schema-validate input in the API layer and return consistent error shapes. Downstream code can then trust its inputs.",
@@ -121,6 +125,31 @@ export const architecture = defineContent("architecture", architectureSchema, {
         {
           title: "Treat external services as unreliable",
           body: "Timeouts, retries with backoff, idempotency keys and circuit breakers keep third-party failures from cascading.",
+        },
+      ],
+    },
+    {
+      id: "delivery",
+      label: "Delivery Pipeline",
+      graphId: "delivery-pipeline",
+      intro:
+        "Shipping is part of the feature. Every change travels the same path — branch, merge request, automated checks, staged environments, production validation — and monitoring closes the loop.",
+      concepts: [
+        {
+          title: "Small branches, reviewed merges",
+          body: "Changes land through merge requests with peer review and a passing pipeline. Short-lived branches keep reviews focused and merges painless.",
+        },
+        {
+          title: "The pipeline is the gate",
+          body: "Lint, type checks, unit, component and end-to-end tests and the build run on every merge request. A red pipeline blocks the merge, so main stays releasable.",
+        },
+        {
+          title: "Build once, promote the same artifact",
+          body: "The container image validated in staging is the one that reaches production. Environments differ only in configuration, which removes a whole class of release surprises.",
+        },
+        {
+          title: "Validate after release",
+          body: "A deploy isn't done until production is checked. Telemetry and error tracking show whether the release behaves, and regressions are rolled back or fixed forward quickly.",
         },
       ],
     },

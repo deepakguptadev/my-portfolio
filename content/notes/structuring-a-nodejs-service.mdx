@@ -1,0 +1,98 @@
+export const metadata = {
+  title: "Structuring a Node.js Service That Stays Maintainable",
+  summary:
+    "Routes that only translate HTTP, services that hold the rules, repositories that own the data — and the same shape whether you use Express or NestJS.",
+  tags: ["Node.js", "Express", "NestJS", "Architecture"],
+  status: "draft",
+  related: [{ label: "Backend & APIs lab", href: "/architecture?module=api" }],
+};
+
+## The problem with fat route handlers
+
+Most Node.js services start with route handlers that do everything: parse the body, check permissions, run SQL, send an email, format the response. It works until the same rule is needed by a background job, or until testing one rule means spinning up an HTTP server and a database.
+
+## Four layers, one direction
+
+1. **Routes or controllers** translate HTTP: validate input, call a service, map the result to a status code.
+2. **Services** hold business rules. They never see `req` or `res`.
+3. **Repositories** own data access, so storage details stay in one place.
+4. **Clients** wrap the outside world: email, queues, payment and AI APIs.
+
+Dependencies point downward only. A service can be called from a route, a job or a test without changing it.
+
+```ts title="projects/router.ts"
+const createProject = z.object({
+  name: z.string().trim().min(2).max(80),
+  teamId: z.string().uuid(),
+});
+
+router.post("/projects", requireAuth, async (req, res, next) => {
+  const parsed = createProject.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: "invalid_input", issues: parsed.error.issues });
+  }
+  try {
+    const project = await projectService.create(parsed.data, req.user);
+    res.status(201).json(project);
+  } catch (error) {
+    next(error);
+  }
+});
+```
+
+```ts title="projects/service.ts"
+export function createProjectService(repo: ProjectRepository, audit: AuditLog) {
+  return {
+    async create(input: CreateProject, user: User) {
+      if (!user.teamIds.includes(input.teamId)) throw new ForbiddenError();
+      const project = await repo.insert({ ...input, ownerId: user.id });
+      await audit.record("project.created", { projectId: project.id, by: user.id });
+      return project;
+    },
+  };
+}
+```
+
+The service receives its dependencies as arguments, so a unit test can pass an in-memory repository and assert on the rule directly.
+
+## Errors as types, not strings
+
+Services throw domain errors such as `NotFoundError` or `ForbiddenError`. One error middleware maps them to HTTP and makes sure unknown errors are logged and never leak details to the client:
+
+```ts title="error-handler.ts"
+app.use((error: unknown, req: Request, res: Response, _next: NextFunction) => {
+  if (error instanceof NotFoundError) return res.status(404).json({ error: "not_found" });
+  if (error instanceof ForbiddenError) return res.status(403).json({ error: "forbidden" });
+  logger.error({ err: error, path: req.path }, "unhandled error");
+  res.status(500).json({ error: "internal" });
+});
+```
+
+## The same shape in NestJS
+
+NestJS turns these layers into conventions: controllers for HTTP, providers for services, guards for authentication, pipes for validation and exception filters for error mapping.
+
+```ts title="projects.controller.ts"
+@Controller("projects")
+@UseGuards(AuthGuard)
+export class ProjectsController {
+  constructor(private readonly projects: ProjectsService) {}
+
+  @Post()
+  create(@Body() dto: CreateProjectDto, @CurrentUser() user: User) {
+    return this.projects.create(dto, user);
+  }
+}
+```
+
+## Express or NestJS?
+
+**Express** suits small services and teams that want full control, but the structure is only as good as the team's discipline. **NestJS** suits larger codebases and teams: dependency injection and conventions make every module look the same, at the cost of more boilerplate. Either way, the layering is what matters, not the framework.
+
+## A short checklist
+
+- Route handlers stay short and contain no business rules.
+- Services can be tested without HTTP or a real database.
+- Configuration is validated at startup, so a missing variable fails fast.
+- Every outbound call has a timeout.
+- A health endpoint reports whether the service and its dependencies are ready.

@@ -180,6 +180,7 @@ export function SystemGraph({
       role="group"
       aria-label={graph.title}
       aria-describedby={instructionsId}
+      data-spotlight="grid"
       className="relative overflow-hidden rounded-md border border-line bg-canvas-alt bg-dot-grid"
       style={{ aspectRatio }}
     >
@@ -329,7 +330,9 @@ export function SystemGraph({
           )}
           {showTrace && graph.trace && (
             <div className="flex flex-wrap items-center gap-2">
-              <span className="mr-1 eyebrow text-fg-muted">Trace a request</span>
+              <span className="mr-1 eyebrow text-fg-muted">
+                {graph.traceLabel ?? "Trace a request"}
+              </span>
               <Button
                 size="sm"
                 variant="secondary"

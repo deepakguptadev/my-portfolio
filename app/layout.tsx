@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { CommandProvider } from "@/components/command/command-provider";
+import { PointerSpotlight } from "@/components/effects/pointer-spotlight";
+import { ScrollToTop } from "@/components/layout/scroll-to-top";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SkipLink } from "@/components/layout/skip-link";
@@ -46,6 +48,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
         <SkipLink />
+        {/* Scroll progress on every page: CSS scroll-driven, no JavaScript; hidden where unsupported. */}
+        <div aria-hidden className="scroll-progress print:hidden" />
         <CommandProvider>
           <SiteHeader />
           <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
@@ -54,6 +58,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SiteFooter />
         </CommandProvider>
         <Toaster />
+        <PointerSpotlight />
+        <ScrollToTop />
         <Analytics />
       </body>
     </html>

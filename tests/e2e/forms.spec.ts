@@ -8,12 +8,20 @@ test.describe("notes", () => {
     await page.getByLabel("Search notes").fill("zzz-no-match");
     await expect(page.getByText(/No notes match/)).toBeVisible();
     await page.getByRole("button", { name: "Clear search" }).click();
-    await expect(page.getByRole("status").filter({ hasText: "3 notes" })).toBeVisible();
+    await expect(page.getByRole("status").filter({ hasText: "9 notes" })).toBeVisible();
   });
 
   test("sample notes are labeled and kept out of search engines", async ({ page }) => {
     await page.goto("/notes/nextjs-rendering-strategies");
     await expect(page.getByText("Sample", { exact: true }).first()).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  });
+
+  test("draft notes are labeled and kept out of search engines until published", async ({
+    page,
+  }) => {
+    await page.goto("/notes/rest-or-graphql");
+    await expect(page.getByText("Draft", { exact: true }).first()).toBeVisible();
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
   });
 });

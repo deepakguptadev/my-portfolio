@@ -1,0 +1,77 @@
+export const metadata = {
+  title: "REST or GraphQL: Choosing an API Style",
+  summary:
+    "Both work. The right choice depends on who consumes the API, how its data is shaped and cached, and how much contract tooling the team will maintain.",
+  tags: ["APIs", "REST", "GraphQL", "Node.js"],
+  status: "draft",
+  related: [{ label: "Backend & APIs lab", href: "/architecture?module=api" }],
+};
+
+## Start from the consumers
+
+The most useful question is not "which is better" but "who calls this API, and what do they need?" A single web app built by the same team that owns the backend has very different needs from a mobile app, a dashboard and two partner integrations all reading the same data.
+
+## Where REST is the better default
+
+REST fits data that is naturally shaped as resources — projects, users, orders — with create, read, update and delete operations.
+
+- **HTTP caching works for free.** `GET` responses can be cached by browsers and CDNs with `Cache-Control` and `ETag`.
+- **Operations are easy to observe.** One route per operation means status codes, latency and error rates are visible per endpoint.
+- **It suits public and partner APIs**, where consumers expect plain HTTP and stable URLs.
+
+```ts title="routes/projects.ts"
+router.get("/projects/:id", requireAuth, async (req, res, next) => {
+  try {
+    const project = await projects.findById(req.params.id, req.user);
+    if (!project) return res.status(404).json({ error: "not_found" });
+    res.set("Cache-Control", "private, max-age=60").json(project);
+  } catch (error) {
+    next(error);
+  }
+});
+```
+
+## Where GraphQL earns its cost
+
+GraphQL pays off when several clients need different shapes of the same data, or when one screen would otherwise make a chain of REST calls.
+
+```graphql title="project-card.graphql"
+query ProjectCard($id: ID!) {
+  project(id: $id) {
+    id
+    title
+    owner {
+      name
+    }
+    openIssues: issues(status: OPEN) {
+      totalCount
+    }
+  }
+}
+```
+
+With GraphQL Code Generator, every query becomes a typed document, so the component and the schema cannot drift apart without the build failing:
+
+```tsx title="project-card.tsx"
+const { data, loading } = useQuery(ProjectCardDocument, { variables: { id } });
+```
+
+## The costs people forget
+
+- **Caching moves into the client.** Most queries are `POST` requests, so HTTP caching mostly disappears and a normalized client cache (such as Apollo Client's) takes its place.
+- **N+1 queries hide in resolvers.** A list of 50 projects that each resolve an owner can mean 51 database calls. Batch them with a loader per request.
+- **Public schemas need limits.** Depth and cost limits stop one expensive query from taking the service down.
+- **Errors come back with status 200.** Monitoring has to read the `errors` array in the body, not just the status code.
+
+## A quick decision checklist
+
+| Question            | Leans REST                   | Leans GraphQL                       |
+| ------------------- | ---------------------------- | ----------------------------------- |
+| Who consumes it?    | One client, or third parties | Several first-party clients         |
+| How is data shaped? | Resources and CRUD           | Graph-shaped, aggregated per screen |
+| Where is caching?   | HTTP and CDN                 | Client-side cache                   |
+| Team tooling        | Minimal                      | Schema, codegen, resolver batching  |
+
+## Mixing is fine
+
+Many systems use both: GraphQL for the product UI, REST for webhooks, file uploads and public endpoints. Whichever you choose, keep validation, authorization and business rules below the transport layer. Then the API style is a thin adapter, and changing it later is cheap.

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { engineering } from "@/content/engineering";
 import { profile } from "@/content/profile";
 import { JsonLd } from "@/components/seo/json-ld";
+import { formatPeriod } from "@/lib/format";
 import { personJsonLd } from "@/lib/json-ld";
 import { pageMetadata } from "@/lib/seo";
 
@@ -92,7 +93,7 @@ export default function AboutPage() {
                     value: (
                       <span>
                         {profile.education.degree} — {profile.education.field},{" "}
-                        {profile.education.year}
+                        {formatPeriod(profile.education.period)}
                         <span className="mt-1 block">
                           {profile.education.institution ?? (
                             <ContentRequired inline hint="institution" />
