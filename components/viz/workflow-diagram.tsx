@@ -8,8 +8,8 @@ type WorkflowDiagramProps = {
 };
 
 /**
- * Linear user workflow as an ordered list. A single row that scrolls
- * horizontally (with snap) when it doesn't fit; never shrinks the text.
+ * Linear user workflow as an ordered list. Wraps on large screens; below
+ * that it scrolls horizontally (with snap) rather than shrinking the text.
  */
 export function WorkflowDiagram({ steps, label, className }: WorkflowDiagramProps) {
   return (
@@ -17,7 +17,7 @@ export function WorkflowDiagram({ steps, label, className }: WorkflowDiagramProp
       <ol
         aria-label={label}
         tabIndex={0}
-        className="-mx-1 flex snap-x [scrollbar-width:thin] items-center gap-1 overflow-x-auto px-1 pb-2 focus-visible:outline-offset-4"
+        className="-mx-1 flex snap-x [scrollbar-width:thin] items-center gap-1 overflow-x-auto px-1 pb-2 focus-visible:outline-offset-4 lg:flex-wrap lg:gap-y-2 lg:overflow-visible"
       >
         {steps.map((step, index) => (
           <li key={step} className="flex shrink-0 snap-start items-center gap-1">
