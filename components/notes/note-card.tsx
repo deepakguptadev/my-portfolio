@@ -14,7 +14,10 @@ export function NoteCard({ note }: { note: Note }) {
   const badge = statusBadge[meta.status];
 
   return (
-    <article className="group relative flex h-full flex-col rounded-lg border border-line bg-surface p-6 transition-colors duration-small hover:border-line-strong">
+    <article
+      data-spotlight="card"
+      className="group relative flex h-full flex-col rounded-lg border border-line bg-surface p-6 transition-colors duration-small hover:border-line-strong"
+    >
       <div className="mb-4 flex items-center justify-between gap-3">
         <p className="font-mono text-caption text-fg-muted">
           {meta.publishedAt ? (

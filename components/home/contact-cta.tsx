@@ -8,7 +8,10 @@ export function ContactCta() {
   return (
     <section aria-labelledby="contact-cta-title" className="pb-16 md:pb-24 xl:pb-30">
       <Container width="wide">
-        <div className="rounded-xl border border-line bg-surface bg-dot-grid px-6 py-12 md:px-12 md:py-16">
+        <div
+          data-spotlight="grid"
+          className="rounded-xl border border-line bg-surface bg-dot-grid px-6 py-12 md:px-12 md:py-16"
+        >
           <p className="mb-4 eyebrow text-fg-muted">09 — /contact</p>
           <h2 id="contact-cta-title" className="max-w-[22ch] text-h1 text-fg">
             Have a product, problem, or idea worth building?

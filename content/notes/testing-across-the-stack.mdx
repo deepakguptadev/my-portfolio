@@ -1,0 +1,87 @@
+export const metadata = {
+  title: "Testing Across the Stack Without Slowing Down",
+  summary:
+    "Unit tests for logic, component tests with a mocked network, a few end-to-end journeys in a real browser — and what each layer should never try to do.",
+  tags: ["Testing", "Jest", "Playwright", "MSW"],
+  status: "draft",
+  related: [{ label: "Quality practices", href: "/engineering#quality" }],
+};
+
+## Each layer answers a different question
+
+A test suite is fast and trustworthy when every layer has one job:
+
+| Layer       | Question it answers                    | Tools                         | Speed        |
+| ----------- | -------------------------------------- | ----------------------------- | ------------ |
+| Unit        | Is this logic right?                   | Jest or Vitest                | Milliseconds |
+| Component   | Does the UI behave for a real user?    | React Testing Library and MSW | Fast         |
+| Integration | Do the API and its data layer agree?   | HTTP tests on a test database | Seconds      |
+| End-to-end  | Can a user complete the whole journey? | Playwright or Cypress         | Seconds each |
+
+Most bugs should be caught by the cheap layers. End-to-end tests are for the few journeys that must never break.
+
+## Unit tests: pure logic, real code
+
+Test business rules directly, with real inputs and outputs. Avoid mocking your own modules; if a function is hard to test without mocks, that usually points to a design problem.
+
+```ts title="pricing.test.ts"
+test("applies the team discount only above the seat threshold", () => {
+  expect(monthlyPrice({ seats: 9, plan: "team" })).toBe(90);
+  expect(monthlyPrice({ seats: 10, plan: "team" })).toBe(85);
+});
+```
+
+## Component tests: the user's view, a mocked network
+
+Render the component, interact the way a user would, and assert on what they would see. Mock only the network, with MSW, so data fetching, loading and error states all run for real:
+
+```ts title="mocks/handlers.ts"
+import { http, HttpResponse } from "msw";
+
+export const handlers = [
+  http.get("/api/projects/:id", ({ params }) =>
+    HttpResponse.json({ id: params.id, name: "Inspection app" }),
+  ),
+  http.post("/api/projects/:id/archive", () => HttpResponse.json({ archived: true })),
+];
+```
+
+```tsx title="project-header.test.tsx"
+test("the owner can archive a project", async () => {
+  const user = userEvent.setup();
+  render(<ProjectHeader id="42" />, { wrapper: QueryProvider });
+
+  expect(await screen.findByRole("heading", { name: "Inspection app" })).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Archive" }));
+  expect(await screen.findByText("Project archived")).toBeVisible();
+});
+```
+
+Error states are where these tests pay off most. Override one handler for a single test:
+
+```ts
+server.use(http.get("/api/projects/:id", () => new HttpResponse(null, { status: 500 })));
+```
+
+## End-to-end tests: few, critical, in a real browser
+
+Keep end-to-end tests for journeys that cross the whole system: signing in, creating the core object, paying. Use role-based locators, the same way a screen reader finds elements, so tests survive markup changes:
+
+```ts title="projects.spec.ts"
+test("a team member can create a project", async ({ page }) => {
+  await page.goto("/projects");
+  await page.getByRole("button", { name: "New project" }).click();
+  await page.getByLabel("Name").fill("Line 4 inspections");
+  await page.getByRole("button", { name: "Create" }).click();
+  await expect(page.getByRole("heading", { name: "Line 4 inspections" })).toBeVisible();
+});
+```
+
+The same browser run is a good place for automated accessibility checks, such as axe on every key page.
+
+## Keeping the suite trustworthy
+
+- **A flaky test is a bug.** Quarantine it and fix it quickly, or the team learns to ignore red builds.
+- **Run the fast layers on every merge request**, and the end-to-end suite before anything reaches `main`.
+- **Don't chase a coverage percentage.** Cover the rules and journeys that would hurt users if they broke.
+- **Delete tests that only restate the implementation.** They break on every refactor and catch nothing.

@@ -13,15 +13,16 @@ export function LabTeaser() {
         path="/architecture"
         title="Architecture lab"
         id="lab-title"
-        lede="Interactive explorations of how I structure React applications, rendering, micro frontends and APIs."
+        lede="Interactive explorations of how I build across the stack: React and Next.js, micro frontends, Node.js APIs and the delivery pipeline."
       />
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {architecture.modules.map((module, index) => {
           const graph = getGraph(module.graphId);
           return (
             <li key={module.id}>
               <Link
                 href={`/architecture?module=${module.id}`}
+                data-spotlight="card"
                 className="group flex h-full flex-col rounded-lg border border-line bg-surface p-5 transition-colors duration-small hover:border-line-strong"
               >
                 <span className="font-mono text-caption text-fg-muted">

@@ -8,7 +8,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Engineering Notes",
   description:
-    "Technical notes on React, Next.js rendering, micro frontends, state management and frontend architecture.",
+    "Engineering notes across the stack: API design, Node.js services, delivery pipelines, testing, frontend performance and shipping AI features.",
   path: "/notes",
 });
 
@@ -24,8 +24,8 @@ export default async function NotesPage() {
         title="Engineering notes"
         lede={
           published > 0
-            ? "Notes on frontend architecture, rendering and the decisions behind them."
-            : "Notes on frontend architecture, rendering and the decisions behind them. The notes below are samples while full articles are being written."
+            ? "Notes from across the stack — APIs, services, delivery, testing and performance — and the decisions behind them."
+            : "Notes from across the stack — APIs, services, delivery, testing and performance — and the decisions behind them. Notes marked Draft or Sample are still being reviewed."
         }
       />
       <Container width="wide" className="pb-16 md:pb-24">

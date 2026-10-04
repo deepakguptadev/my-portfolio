@@ -314,14 +314,91 @@
   }
 }
 
-/* ── Reading progress (CSS scroll-driven animation, zero JS) ────────── */
+/* ── Pointer spotlight (position fed by components/effects/pointer-spotlight.tsx) ── */
 @layer components {
-  .reading-progress {
+  [data-spotlight] {
+    position: relative;
+    isolation: isolate;
+  }
+  [data-spotlight]::before,
+  [data-spotlight="card"]::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity var(--dur-medium) var(--ease-standard);
+  }
+  /* Interactive cards: a 1px accent ring and a soft wash that follow the pointer. */
+  [data-spotlight="card"]::before {
+    inset: -1px;
+    z-index: 1;
+    padding: 1px;
+    background: radial-gradient(
+      220px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      var(--accent),
+      transparent 70%
+    );
+    mask-image: linear-gradient(black, black), linear-gradient(black, black);
+    mask-clip: content-box, border-box;
+    mask-composite: exclude;
+  }
+  [data-spotlight="card"]::after {
+    inset: 0;
+    z-index: -1;
+    /* Capped at 50% so muted text keeps 4.5:1 contrast at the brightest point. */
+    background: radial-gradient(
+      320px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      color-mix(in srgb, var(--accent-soft) 50%, transparent),
+      transparent 70%
+    );
+  }
+  /* Dot-grid surfaces: the grid lights up in the accent around the pointer.
+     Dots match bg-dot-grid's 16px tiles so they land on the existing grid. */
+  [data-spotlight="grid"]::before {
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(var(--accent) 1.5px, transparent 1.5px),
+      radial-gradient(
+        200px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+        color-mix(in srgb, var(--accent-soft) 50%, transparent),
+        transparent
+      );
+    background-size:
+      16px 16px,
+      100% 100%;
+    mask-image: radial-gradient(
+      200px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      black,
+      transparent
+    );
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    [data-spotlight="card"]:hover::before,
+    [data-spotlight="card"]:hover::after {
+      opacity: 1;
+    }
+    [data-spotlight="grid"]:hover::before {
+      opacity: 1;
+    }
+  }
+  @media (forced-colors: active) {
+    [data-spotlight]::before,
+    [data-spotlight]::after {
+      display: none;
+    }
+  }
+}
+
+/* ── Scroll progress (CSS scroll-driven animation, zero JS) ─────────── */
+@layer components {
+  .scroll-progress {
     display: none;
   }
   @supports (animation-timeline: scroll()) {
     @media (prefers-reduced-motion: no-preference) {
-      .reading-progress {
+      .scroll-progress {
         display: block;
         position: fixed;
         inset-inline: 0;
@@ -330,12 +407,15 @@
         height: 2px;
         background: var(--accent);
         transform-origin: left;
-        animation: reading-progress linear both;
+        /* Empty by default: on a page too short to scroll the timeline is
+           inactive, and the bar must not fall back to full width. */
+        transform: scaleX(0);
+        animation: scroll-progress linear both;
         animation-timeline: scroll(root);
       }
     }
   }
-  @keyframes reading-progress {
+  @keyframes scroll-progress {
     from {
       transform: scaleX(0);
     }

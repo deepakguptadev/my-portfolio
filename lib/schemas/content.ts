@@ -18,10 +18,12 @@ export const profileSchema = z.object({
   backendStack: z.array(z.string()),
   focusAreas: z.array(z.string()),
   heroBadges: z.array(z.string()),
+  /** Headline results for the resume overview, taken verbatim from the resume. */
+  highlights: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
   education: z.object({
     degree: z.string(),
     field: z.string(),
-    year: z.string(),
+    period,
     institution: z.string().nullable(),
   }),
   /** Structured "About" story; draft text is flagged until approved. */

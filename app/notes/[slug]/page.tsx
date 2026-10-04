@@ -65,8 +65,6 @@ export default async function NotePage({ params }: Props) {
           })}
         />
       )}
-      {/* CSS scroll-driven progress bar; no JavaScript. Hidden where unsupported. */}
-      <div aria-hidden className="reading-progress" />
       <PageHeader
         index="06"
         path={`/notes/${note.slug}`}
@@ -101,6 +99,7 @@ export default async function NotePage({ params }: Props) {
               {prev ? (
                 <Link
                   href={`/notes/${prev.slug}`}
+                  data-spotlight="card"
                   className="group rounded-md border border-line bg-surface p-4 hover:border-line-strong"
                 >
                   <span className="flex items-center gap-1.5 font-mono text-caption text-fg-muted">
@@ -116,6 +115,7 @@ export default async function NotePage({ params }: Props) {
               {next && (
                 <Link
                   href={`/notes/${next.slug}`}
+                  data-spotlight="card"
                   className="group rounded-md border border-line bg-surface p-4 text-right hover:border-line-strong"
                 >
                   <span className="flex items-center justify-end gap-1.5 font-mono text-caption text-fg-muted">

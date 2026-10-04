@@ -1,0 +1,115 @@
+export const metadata = {
+  title: "Shipping LLM Features: Streaming, Structured Output and Validation",
+  summary:
+    "Treat the model as an unreliable external service: stream for perceived speed, ask for structured output, validate everything and keep a fallback.",
+  tags: ["AI", "OpenAI", "AWS Bedrock", "Node.js"],
+  status: "draft",
+  related: [{ label: "AI + Engineering", href: "/engineering#ai" }],
+};
+
+## A model is an external dependency
+
+An LLM call deserves the same care as a payment API: timeouts, retries, cost limits, fallbacks and logging. It also adds something most APIs don't have: the same input can produce different output. Product code has to be designed around that.
+
+## Stream for perceived speed
+
+A complete answer can take several seconds; the first words can arrive in well under one. Streaming the response makes the feature feel fast even when the total time is unchanged. A Next.js route handler streaming plain text from the OpenAI SDK:
+
+```ts title="app/api/summarize/route.ts"
+import OpenAI from "openai";
+
+const openai = new OpenAI();
+
+export async function POST(request: Request) {
+  const { text } = await request.json();
+  if (typeof text !== "string" || text.length > 20_000) {
+    return new Response("Invalid input", { status: 400 });
+  }
+
+  const stream = await openai.chat.completions.create({
+    model: process.env.SUMMARY_MODEL!,
+    stream: true,
+    messages: [
+      { role: "system", content: "Summarize the text in three short bullet points." },
+      { role: "user", content: text },
+    ],
+  });
+
+  const encoder = new TextEncoder();
+  const body = new ReadableStream({
+    async start(controller) {
+      for await (const chunk of stream) {
+        controller.enqueue(encoder.encode(chunk.choices[0]?.delta?.content ?? ""));
+      }
+      controller.close();
+    },
+  });
+
+  return new Response(body, { headers: { "Content-Type": "text/plain; charset=utf-8" } });
+}
+```
+
+The model name comes from configuration, so it can change without a deploy.
+
+## Ask for structure, then verify it
+
+When the output feeds other code, ask for JSON and validate it against a schema before using it. A response that fails validation is treated like any other failed dependency call:
+
+```ts title="triage-ticket.ts"
+const Triage = z.object({
+  category: z.enum(["bug", "billing", "feature-request", "other"]),
+  priority: z.enum(["low", "medium", "high"]),
+  summary: z.string().max(200),
+});
+
+function parseJson(text: string | null | undefined) {
+  try {
+    return JSON.parse(text ?? "");
+  } catch {
+    return undefined;
+  }
+}
+
+export async function triageTicket(ticket: string) {
+  const response = await openai.chat.completions.create({
+    model: process.env.TRIAGE_MODEL!,
+    response_format: { type: "json_object" },
+    messages: [
+      {
+        role: "system",
+        content: "Return JSON with category, priority and a one-sentence summary of the ticket.",
+      },
+      { role: "user", content: ticket },
+    ],
+  });
+
+  const result = Triage.safeParse(parseJson(response.choices[0]?.message?.content));
+  return result.success ? result.data : null; // null routes the ticket to manual triage
+}
+```
+
+## The same patterns on AWS Bedrock
+
+AWS Bedrock offers several model families behind IAM, with a streaming API (`ConverseStream`) for the same token-by-token experience. Keeping a thin interface between product code and the provider makes the choice of model a configuration detail:
+
+```ts title="text-model.ts"
+export interface TextModel {
+  stream(prompt: Prompt, signal?: AbortSignal): AsyncIterable<string>;
+  complete(prompt: Prompt, signal?: AbortSignal): Promise<string>;
+}
+```
+
+## Validate the feature, not just one response
+
+- **Keep a set of golden examples** with expected outcomes, and run them whenever the prompt or the model changes.
+- **Track latency, token usage and validation failures** per feature, the same way you track API error rates.
+- **Keep a human in the loop** where a wrong answer is costly: suggest, then let a person confirm.
+- **Design the fallback first.** If the model is slow, down or wrong, what does the user see?
+
+## A short checklist
+
+- Inputs are validated and size-limited before they reach the model.
+- Responses stream wherever a person is waiting.
+- Structured output is schema-validated before use.
+- Timeouts, retries and a fallback path exist.
+- Prompt and model changes are checked against golden examples.

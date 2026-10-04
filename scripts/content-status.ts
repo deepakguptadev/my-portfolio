@@ -35,6 +35,8 @@ for (const collection of ["projects", "notes"]) {
     const items = [...block.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
     if (/status:\s*"sample"/.test(source))
       items.push("Sample note — replace with a real article or remove");
+    if (/status:\s*"draft"/.test(source))
+      items.push('Draft — review, then set status: "published" with a publishedAt date');
     if (/<ContentRequired/.test(source))
       items.push("Has inline <ContentRequired> sections in the body");
     sections.push({ title: `${collection}/${file}`, items });

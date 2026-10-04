@@ -1,6 +1,7 @@
 import type { SystemGraphData } from "@/lib/schemas/graph";
 import {
   apiArchitectureGraph,
+  deliveryPipelineGraph,
   microFrontendsGraph,
   nextjsRenderingGraph,
   reactArchitectureGraph,
@@ -18,6 +19,7 @@ export const graphs = {
   "nextjs-rendering": nextjsRenderingGraph,
   "micro-frontends": microFrontendsGraph,
   "api-architecture": apiArchitectureGraph,
+  "delivery-pipeline": deliveryPipelineGraph,
   "tech-ecosystem": techEcosystemGraph,
 } satisfies Record<string, SystemGraphData>;
 

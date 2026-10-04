@@ -87,6 +87,15 @@ describe("SystemGraph", () => {
     expect(screen.getByRole("button", { name: "Previous" })).toBeEnabled();
   });
 
+  it("labels a trace that follows a change rather than a request", async () => {
+    const user = userEvent.setup();
+    render(<SystemGraph graph={graphs["delivery-pipeline"]} showTrace />);
+
+    expect(screen.getByText("Trace a change")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Start" }));
+    expect(screen.getByText("Step 1 of 7")).toBeInTheDocument();
+  });
+
   it("offers a list alternative", async () => {
     const user = userEvent.setup();
     render(<SystemGraph graph={graphs.hero} />);

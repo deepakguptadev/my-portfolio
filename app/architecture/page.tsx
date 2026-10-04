@@ -17,7 +17,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Architecture Lab",
   description:
-    "Interactive explorations of React application architecture, Next.js rendering strategies, micro frontends with Module Federation, and API design.",
+    "Interactive explorations of React application architecture, Next.js rendering, micro frontends, Node.js API design and the delivery pipeline from merge request to production.",
   path: "/architecture",
 });
 
@@ -26,6 +26,7 @@ const aspect: Record<string, number> = {
   nextjs: 16 / 10,
   "micro-frontends": 16 / 10,
   api: 4 / 3.4,
+  delivery: 16 / 9,
 };
 
 function ModulePanel({ module }: { module: LabModule }) {
@@ -83,7 +84,7 @@ export default function ArchitecturePage() {
         index="04"
         path="/architecture"
         title="Architecture Lab"
-        lede="How I structure web systems, from the component tree to the API, explained interactively. Pick a module, then hover, select or use the arrow keys to explore each diagram."
+        lede="How I structure full-stack systems — from the component tree to the API to the pipeline that ships them — explained interactively. Pick a module, then hover, select or use the arrow keys to explore each diagram."
       />
       <Container width="wide" className="pb-16 md:pb-24">
         <UrlTabs
