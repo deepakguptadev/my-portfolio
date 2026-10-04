@@ -1,0 +1,87 @@
+import { defineContent } from "@/lib/schemas/common";
+import { systemGraph } from "@/lib/schemas/graph";
+
+export const heroGraph = defineContent("graphs/hero", systemGraph, {
+  id: "hero",
+  title: "How I build: product to infrastructure",
+  description:
+    "A product request flows through the frontend stack and Node.js services into APIs, data and cloud infrastructure.",
+  layers: ["Product", "Application", "Interface", "Infrastructure"],
+  nodes: [
+    {
+      id: "product",
+      label: "Product",
+      kind: "concept",
+      summary: "The user problem and business goal every technical decision serves.",
+      details: {
+        whyItMatters: "Architecture is only good if it serves the product's users and constraints.",
+      },
+      layout: { x: 50, y: 8 },
+      layer: 0,
+    },
+    {
+      id: "react",
+      label: "React",
+      kind: "module",
+      summary: "Component architecture, hooks, and state/data layers for complex interfaces.",
+      details: { tech: ["React.js", "TypeScript", "Redux Toolkit", "React Query"] },
+      layout: { x: 18, y: 38 },
+      layer: 1,
+    },
+    {
+      id: "nextjs",
+      label: "Next.js",
+      kind: "application",
+      summary: "Server and client rendering, routing and performance for production web apps.",
+      details: { tech: ["App Router", "Server Components", "SSR / SSG / ISR"] },
+      layout: { x: 50, y: 38 },
+      layer: 1,
+    },
+    {
+      id: "node",
+      label: "Node.js",
+      kind: "application",
+      summary: "Backend services and BFF layers with Express and NestJS.",
+      details: { tech: ["Node.js", "Express.js", "NestJS"] },
+      layout: { x: 82, y: 38 },
+      layer: 1,
+    },
+    {
+      id: "apis",
+      label: "APIs",
+      kind: "api",
+      summary: "REST and GraphQL contracts shaped around what each screen needs.",
+      details: { tech: ["REST", "GraphQL", "WebSockets"] },
+      layout: { x: 50, y: 66 },
+      layer: 2,
+    },
+    {
+      id: "aws",
+      label: "AWS",
+      kind: "external",
+      summary: "Cloud hosting, containers and managed services.",
+      details: { tech: ["AWS", "Docker", "CI/CD"] },
+      layout: { x: 30, y: 92 },
+      layer: 3,
+    },
+    {
+      id: "database",
+      label: "Database",
+      kind: "database",
+      summary: "Relational and document stores chosen per data shape.",
+      details: { tech: ["PostgreSQL", "MySQL", "MongoDB"] },
+      layout: { x: 70, y: 92 },
+      layer: 3,
+    },
+  ],
+  edges: [
+    { id: "product-react", from: "product", to: "react", kind: "dependency" },
+    { id: "product-nextjs", from: "product", to: "nextjs", kind: "dependency" },
+    { id: "product-node", from: "product", to: "node", kind: "dependency" },
+    { id: "react-apis", from: "react", to: "apis", kind: "request" },
+    { id: "nextjs-apis", from: "nextjs", to: "apis", kind: "request" },
+    { id: "node-apis", from: "node", to: "apis", kind: "dependency", label: "serves" },
+    { id: "apis-aws", from: "apis", to: "aws", kind: "dependency", label: "runs on" },
+    { id: "apis-database", from: "apis", to: "database", kind: "dataFlow" },
+  ],
+});

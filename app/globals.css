@@ -281,3 +281,25 @@
     }
   }
 }
+
+/* ── Code blocks (rehype-pretty-code, dual Shiki themes) ────────────── */
+@layer components {
+  /* Block code only; inline code is also wrapped by rehype-pretty-code. */
+  [data-rehype-pretty-code-figure] pre code {
+    display: grid;
+  }
+  [data-rehype-pretty-code-figure] pre [data-line] {
+    padding-inline: 16px;
+  }
+  [data-rehype-pretty-code-figure] [data-highlighted-line] {
+    background-color: var(--accent-soft);
+  }
+  [data-rehype-pretty-code-figure] span {
+    color: var(--shiki-light);
+  }
+  [data-rehype-pretty-code-figure] span {
+    @variant dark {
+      color: var(--shiki-dark);
+    }
+  }
+}

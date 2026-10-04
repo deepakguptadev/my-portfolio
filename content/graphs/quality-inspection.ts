@@ -1,0 +1,95 @@
+import { defineContent } from "@/lib/schemas/common";
+import { systemGraph } from "@/lib/schemas/graph";
+
+/** Architecture as described in the brief; no components added. */
+export const qualityInspectionGraph = defineContent("graphs/quality-inspection", systemGraph, {
+  id: "quality-inspection",
+  title: "Quality Inspection Platform architecture",
+  description:
+    "An iPad PWA built in React talks to Spring Boot REST APIs backed by MySQL; delivery runs through Azure DevOps.",
+  layers: ["Device", "Client application", "Client state", "Interface", "Service", "Data"],
+  nodes: [
+    {
+      id: "ipad",
+      label: "iPad / PWA",
+      kind: "application",
+      summary: "Installable progressive web app used by inspectors on iPads.",
+      details: { tech: ["PWA", "Camera / webcam capture", "Offline support"] },
+      layout: { x: 40, y: 6 },
+      layer: 0,
+    },
+    {
+      id: "react-app",
+      label: "React Application",
+      kind: "application",
+      summary: "Inspection workflows, defect marking on product images and session management.",
+      details: { tech: ["React", "Material UI"] },
+      layout: { x: 40, y: 24 },
+      layer: 1,
+    },
+    {
+      id: "client-state",
+      label: "React Query / Redux",
+      kind: "module",
+      summary: "Client-side data and state management with React Query and Redux Toolkit.",
+      details: { tech: ["React Query", "Redux Toolkit"] },
+      layout: { x: 40, y: 42 },
+      layer: 2,
+    },
+    {
+      id: "rest",
+      label: "REST APIs",
+      kind: "api",
+      summary: "HTTP contract between the PWA and the inspection services.",
+      layout: { x: 40, y: 60 },
+      layer: 3,
+    },
+    {
+      id: "spring",
+      label: "Spring Boot",
+      kind: "application",
+      summary: "Java backend services exposing the REST APIs.",
+      details: { tech: ["Java", "Spring Boot"] },
+      layout: { x: 40, y: 78 },
+      layer: 4,
+    },
+    {
+      id: "mysql",
+      label: "MySQL",
+      kind: "database",
+      summary: "Relational data store behind the platform.",
+      layout: { x: 40, y: 95 },
+      layer: 5,
+    },
+    {
+      id: "azure-devops",
+      label: "Azure DevOps",
+      kind: "external",
+      summary: "Source control, pipelines and delivery.",
+      layout: { x: 84, y: 50 },
+      layer: 4,
+    },
+  ],
+  edges: [
+    { id: "ipad-react", from: "ipad", to: "react-app", kind: "dependency", label: "hosts" },
+    { id: "react-state", from: "react-app", to: "client-state", kind: "dataFlow" },
+    { id: "state-rest", from: "client-state", to: "rest", kind: "request" },
+    { id: "rest-spring", from: "rest", to: "spring", kind: "request" },
+    { id: "spring-mysql", from: "spring", to: "mysql", kind: "dataFlow" },
+    {
+      id: "devops-react",
+      from: "azure-devops",
+      to: "react-app",
+      kind: "dependency",
+      label: "deploys",
+    },
+    {
+      id: "devops-spring",
+      from: "azure-devops",
+      to: "spring",
+      kind: "dependency",
+      label: "deploys",
+    },
+  ],
+  trace: ["ipad-react", "react-state", "state-rest", "rest-spring", "spring-mysql"],
+});

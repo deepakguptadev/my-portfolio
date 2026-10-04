@@ -1,0 +1,82 @@
+export const metadata = {
+  title: "Internal Quality Inspection Platform",
+  shortTitle: "Quality Inspection Platform",
+  summary:
+    "An iPad-first PWA that takes inspectors from a QR scan to a recorded quality result, with defect marking, photo evidence and offline support.",
+  industry: "Sports / Manufacturing",
+  client: {
+    name: "New Balance",
+    anonymized: "Global sportswear brand",
+    nameApproved: false,
+  },
+  period: { start: "2024-11", end: "2025-03" },
+  role: null,
+  featured: true,
+  order: 1,
+  problem:
+    "Quality inspectors needed a single tablet workflow to identify a product, run an inspection, mark defects and capture evidence, including when connectivity on the floor is unreliable.",
+  solution:
+    "A React progressive web app on iPad covering scanning, product lookup, guided inspection sessions, defect marking on interactive product images, photo and webcam capture, and offline support, backed by Spring Boot REST APIs and MySQL.",
+  stack: {
+    frontend: ["React", "Redux Toolkit", "React Query", "PWA", "Material UI"],
+    backend: ["Java", "Spring Boot", "MySQL"],
+    infrastructure: ["Azure DevOps"],
+  },
+  features: [
+    { group: "Scanning & lookup", items: ["QR / barcode scanning", "Product lookup"] },
+    {
+      group: "Inspection & defects",
+      items: ["Inspection workflows", "Defect marking", "Interactive product images"],
+    },
+    { group: "Evidence capture", items: ["Photo capture", "Webcam capture"] },
+    {
+      group: "Resilience & sessions",
+      items: ["Offline support", "Session management", "Inactivity detection"],
+    },
+    { group: "Feedback & tracking", items: ["Real-time feedback", "Activity tracking"] },
+  ],
+  workflow: [
+    "QR Scan",
+    "Product Lookup",
+    "Inspection Session",
+    "Inspect Product",
+    "Mark Defect",
+    "Capture Evidence",
+    "Submit",
+    "Quality Result",
+  ],
+  architectureGraph: "quality-inspection",
+  related: [
+    { label: "React Architecture", href: "/architecture?module=react" },
+    { label: "API Architecture", href: "/architecture?module=api" },
+    { label: "Performance Lab", href: "/engineering#performance" },
+  ],
+  pending: [
+    "Deepak's role and scope on the project",
+    "Confirm the problem statement wording",
+    "Engineering challenges",
+    "Key technical decisions and tradeoffs",
+    "Qualitative outcome (no unverified metrics)",
+    "Confirm permission to name the client publicly",
+  ],
+};
+
+## Overview
+
+An internal platform for product quality inspection, used on iPads as an installable progressive web app. Inspectors scan a product, start an inspection session, mark defects directly on interactive product images, attach photo evidence and submit a quality result.
+
+## Context
+
+The application runs on iPads in an inspection environment, so it was built as a PWA with offline support, session management and inactivity detection alongside the core inspection workflow.
+
+## Engineering challenges
+
+<ContentRequired hint="The hardest technical problems on this project — e.g. offline data handling, camera capture on iPad, or state across long inspection sessions." />
+
+## Decisions & tradeoffs
+
+<ContentRequired hint="Key decisions with context, alternatives considered and consequences — e.g. why React Query and Redux Toolkit together, or how offline submissions are reconciled." />
+
+## Outcome
+
+<ContentRequired hint="What changed for inspectors or the business, described qualitatively unless real measurements are available." />

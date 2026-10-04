@@ -1,0 +1,40 @@
+export const metadata = {
+  title: "Server State vs Client State",
+  summary:
+    "Most 'global state' is cached server data. Separating the two simplifies React apps and removes a whole class of synchronization bugs.",
+  tags: ["React", "State Management", "React Query"],
+  status: "sample",
+  related: [{ label: "React Architecture lab", href: "/architecture?module=react" }],
+};
+
+<Callout tone="warning" title="Sample note">
+  This is an outline written to demonstrate the notes system. It is not yet a published article.
+</Callout>
+
+## Two different kinds of state
+
+**Server state** lives on the backend; the client holds a cached copy that can go stale. **Client state** exists only in the browser — an open panel, a draft form, the current step of a wizard.
+
+## Why mixing them hurts
+
+Copying API responses into a global store means you now own caching, deduplication, invalidation and refetching by hand. Those are exactly the problems query libraries solve.
+
+## A simple split
+
+```ts title="use-project.ts"
+import { useQuery } from "@tanstack/react-query";
+
+export function useProject(id: string) {
+  return useQuery({
+    queryKey: ["project", id],
+    queryFn: () => api.projects.get(id),
+    staleTime: 60_000,
+  });
+}
+```
+
+Keep client state local with `useState`, lift it only as far as needed, and reach for a small store when several distant components truly share it.
+
+## When a store still makes sense
+
+Long-running client workflows — multi-step forms, offline queues, undo history — are real client state and benefit from a predictable store such as Redux Toolkit.

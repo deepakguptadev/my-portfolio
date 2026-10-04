@@ -98,4 +98,19 @@ test.describe("site shell", () => {
     );
     expect(overflow).toBe(false);
   });
+
+  for (const path of ["/", "/does-not-exist"]) {
+    test(`no console errors or hydration warnings on ${path}`, async ({ page }) => {
+      const errors: string[] = [];
+      page.on("console", (m) => {
+        if (m.type() === "error" && !m.text().includes("404")) errors.push(m.text());
+      });
+      page.on("pageerror", (e) => errors.push(e.message));
+      await page.goto(path);
+      // Hydration and idle-time work (palette preload) have finished by now.
+      await page.waitForLoadState("load");
+      await page.evaluate(() => new Promise((resolve) => requestIdleCallback(resolve)));
+      expect(errors).toEqual([]);
+    });
+  }
 });

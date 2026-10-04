@@ -1,0 +1,53 @@
+export const metadata = {
+  title: "Micro Frontends: When They're Worth It",
+  summary:
+    "Micro frontends solve an organizational problem, not a code-size problem. A checklist for deciding, and the patterns that keep them from becoming a distributed monolith.",
+  tags: ["Micro Frontends", "Module Federation", "Architecture"],
+  status: "sample",
+  related: [{ label: "Micro Frontends lab", href: "/architecture?module=micro-frontends" }],
+};
+
+<Callout tone="warning" title="Sample note">
+  This is an outline written to demonstrate the notes system. It is not yet a published article.
+</Callout>
+
+## The problem they actually solve
+
+Micro frontends let several teams build, test and deploy parts of one product independently. If one team owns the whole frontend, you pay the costs — runtime composition, shared-dependency negotiation, cross-app contracts — without the benefit.
+
+## A quick decision checklist
+
+- More than one team ships to the same product surface.
+- Those teams need different release cadences.
+- Domain boundaries are clear enough to draw on a whiteboard.
+- You can invest in a shared design system and platform tooling.
+
+If most answers are "no", a modular monolith with enforced boundaries gets you 80% of the benefit.
+
+## Patterns that keep them healthy
+
+### Integrate through contracts
+
+Remotes expose a small, versioned surface: a mount function, typed props and events.
+
+```ts title="remote-contract.ts"
+export type RemoteProps = {
+  basePath: string;
+  user: { id: string; roles: string[] };
+  onNavigate: (path: string) => void;
+};
+
+export type MountRemote = (element: HTMLElement, props: RemoteProps) => () => void;
+```
+
+### Share singletons deliberately
+
+React, the router and the design system should load once. Agree on semver ranges and treat a major upgrade as a coordinated migration.
+
+### Isolate failures
+
+Wrap every remote in an error boundary with a fallback and a load timeout so one failing deploy degrades a section, not the whole shell.
+
+## Monorepo or separate repositories?
+
+A monorepo keeps shared code on one version and makes cross-cutting changes atomic; separate repositories make independent ownership natural but require versioned packages and drift management. Many teams use a monorepo with independent deploy pipelines per app.

@@ -1,0 +1,77 @@
+import { defineContent } from "@/lib/schemas/common";
+import { profileSchema } from "@/lib/schemas/content";
+
+export const profile = defineContent("profile", profileSchema, {
+  name: "Deepak Gupta",
+  title: "Senior Software Engineer",
+  subtitle: "Frontend & Full-Stack Engineer",
+  experienceYears: "7+",
+  headline: "Building scalable, high-performance web experiences.",
+  intro:
+    "I'm Deepak Gupta, a Senior Software Engineer with 7+ years of experience building production-grade frontend and full-stack applications.",
+  location: "Delhi NCR, India",
+  availability: "Immediate Joiner",
+  workModes: ["Remote", "Hybrid", "Relocation"],
+  timezone: "IST (UTC+5:30)",
+  primaryStack: ["React.js", "Next.js", "TypeScript", "JavaScript"],
+  secondaryStack: [
+    "Node.js",
+    "Express.js",
+    "NestJS",
+    "REST APIs",
+    "GraphQL",
+    "AWS",
+    "Docker",
+    "PostgreSQL",
+    "MySQL",
+    "MongoDB",
+  ],
+  backendStack: ["Node.js", "Express", "NestJS"],
+  focusAreas: [
+    "Frontend Architecture",
+    "Scalable Web Applications",
+    "Enterprise Applications",
+    "Performance Optimization",
+    "Design Systems",
+    "Reusable Components",
+    "Micro Frontends",
+    "API Integration",
+    "Full-Stack Engineering",
+    "Accessibility",
+    "AI-Assisted Engineering",
+  ],
+  heroBadges: ["7+ Years Experience", "React.js", "Next.js", "TypeScript", "Full-Stack"],
+  education: {
+    degree: "B.Tech",
+    field: "Electronics & Communication Engineering",
+    year: "2019",
+    institution: null,
+  },
+  story: [
+    {
+      id: "origin",
+      title: "From electronics to the web",
+      body: "I graduated in Electronics & Communication Engineering in 2019 and started my career building web applications. Systems thinking from hardware carried over: I like knowing how every layer connects.",
+      draft: true,
+    },
+    {
+      id: "specialization",
+      title: "Frontend architecture, end to end",
+      body: "My core is React, Next.js and TypeScript — component architecture, design systems, state and data layers, and the performance work that keeps large applications fast. I work across the stack with Node.js, REST and GraphQL APIs, and cloud infrastructure when a feature needs it.",
+      draft: true,
+    },
+    {
+      id: "product",
+      title: "Product before pixels",
+      body: "I start from the user's workflow and the business constraint, then choose the simplest architecture that serves both. Tradeoffs get written down so the team can revisit them.",
+      draft: true,
+    },
+    {
+      id: "now",
+      title: "Current focus",
+      body: "Senior frontend and full-stack roles where architecture, performance and product quality matter — using AI tools to move faster while keeping review, testing and production validation firmly human.",
+      draft: true,
+    },
+  ],
+  pending: ["Education institution", "Review and approve the About story wording"],
+});

@@ -34,6 +34,7 @@ import { Skeleton, StatePanel } from "@/components/ui/feedback";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip } from "@/components/ui/tooltip";
+import { getNote, getNotes, getProjects } from "@/lib/content";
 import { parseColorTokens } from "@/lib/tokens";
 import { FormDemo, ToastDemo } from "./demos";
 
@@ -99,10 +100,15 @@ function Block({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-export default function DesignSystemPage() {
+export default async function DesignSystemPage() {
   if (!enabled) notFound();
 
   const colors = parseColorTokens(readFileSync(join(process.cwd(), "styles/tokens.css"), "utf8"));
+  const [sampleNote, notes, projects] = await Promise.all([
+    getNote("nextjs-rendering-strategies"),
+    getNotes(),
+    getProjects(),
+  ]);
 
   return (
     <div>
@@ -485,6 +491,24 @@ export default function DesignSystemPage() {
             ),
           }))}
         />
+      </Section>
+      <Section width="wide" aria-labelledby="ds-mdx">
+        <ModuleHeader
+          index="10"
+          path="content/mdx"
+          title="MDX prose"
+          id="ds-mdx"
+          lede={`Loaded through the typed content layer: ${projects.length} project and ${notes.length} notes validated at build time.`}
+        />
+        {sampleNote && (
+          <article className="max-w-prose">
+            <p className="mb-6 font-mono text-caption text-fg-muted">
+              {sampleNote.meta.title} · {sampleNote.readingMinutes} min ·{" "}
+              {sampleNote.headings.length} headings
+            </p>
+            <sampleNote.Content />
+          </article>
+        )}
       </Section>
     </div>
   );

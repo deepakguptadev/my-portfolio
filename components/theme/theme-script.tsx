@@ -11,5 +11,14 @@ const script = `(function(){try{var t=localStorage.getItem(${JSON.stringify(
 )});if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
 
 export function ThemeScript() {
-  return <script dangerouslySetInnerHTML={{ __html: script }} />;
+  // Executable on the server render; inert ("text/plain") when React renders
+  // it on the client, which avoids React 19's script-tag warning (per the
+  // Next.js "preventing flash before hydration" guide).
+  return (
+    <script
+      type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: script }}
+    />
+  );
 }

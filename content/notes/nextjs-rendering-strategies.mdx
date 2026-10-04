@@ -1,0 +1,37 @@
+export const metadata = {
+  title: "Choosing a Rendering Strategy in Next.js",
+  summary:
+    "Server Components, SSR, SSG, ISR and CSR compared by where they render, how fresh the data is and how much JavaScript they ship.",
+  tags: ["Next.js", "Rendering", "Performance"],
+  status: "sample",
+  related: [{ label: "Next.js Rendering lab", href: "/architecture?module=nextjs" }],
+};
+
+<Callout tone="warning" title="Sample note">
+  This is an outline written to demonstrate the notes system. It is not yet a published article.
+</Callout>
+
+## Start with three questions
+
+1. **How fresh must the data be?** Seconds, hours, or "until the next deploy"?
+2. **Is the page personalized?** Per user, per region, or the same for everyone?
+3. **How interactive is it?** Mostly reading, or a rich application?
+
+## Server Components are the default
+
+In the App Router, components render on the server unless marked with `"use client"`. Their code never reaches the browser, so data fetching and heavy formatting cost the user nothing.
+
+```tsx title="app/projects/page.tsx"
+export default async function ProjectsPage() {
+  const projects = await getProjects(); // runs on the server
+  return <ProjectList projects={projects} />;
+}
+```
+
+## Push interactivity to the leaves
+
+Mark the smallest interactive piece as a Client Component — a filter, a toggle, a form — and keep its parents on the server.
+
+## Static first, dynamic when it must be
+
+Prerender what you can and serve it from the CDN. Reach for revalidation when content changes occasionally, and per-request rendering only for personalized or real-time pages.
