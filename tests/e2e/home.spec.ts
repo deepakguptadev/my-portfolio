@@ -4,7 +4,7 @@ test.describe("home", () => {
   test("states who, what and availability above the fold", async ({ page }, info) => {
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { level: 1, name: /Building scalable, high-performance/ }),
+      page.getByRole("heading", { level: 1, name: /Building scalable web applications/ }),
     ).toBeInViewport();
     await expect(page.getByText(/7\+ years of experience/).first()).toBeVisible();
     if (info.project.name === "desktop") {

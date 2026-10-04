@@ -18,7 +18,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "About",
-  description: `About Deepak Gupta — ${profile.title}, ${profile.subtitle.toLowerCase()} based in ${profile.location}.`,
+  description: `About Deepak Gupta — ${profile.title} based in ${profile.location}. ${profile.subtitle}.`,
   path: "/about",
 });
 
@@ -28,10 +28,17 @@ const layers = [
     label: "Interface",
     tools: ["React.js", "Next.js", "TypeScript", "Design Systems", "Accessibility"],
   },
-  { label: "State & data", tools: ["Redux Toolkit", "React Query", "REST", "GraphQL"] },
-  { label: "Services", tools: ["Node.js", "Express.js", "NestJS"] },
+  { label: "State & data", tools: ["Redux Toolkit", "React Query", "Apollo Client"] },
+  { label: "APIs", tools: ["REST", "GraphQL", "WebSockets", "Socket.IO"] },
+  {
+    label: "Services",
+    tools: ["Node.js", "Express.js", "NestJS", "Microservices", "Authentication & Authorization"],
+  },
   { label: "Data", tools: ["PostgreSQL", "MySQL", "MongoDB"] },
-  { label: "Cloud & delivery", tools: ["AWS", "Docker", "CI/CD"] },
+  {
+    label: "Cloud & delivery",
+    tools: ["AWS", "Docker", "Kubernetes", "GitLab CI/CD", "New Relic"],
+  },
 ];
 
 export default function AboutPage() {
@@ -45,7 +52,7 @@ export default function AboutPage() {
       <PageHeader
         index="01"
         path="/about"
-        title="A senior engineer who thinks in systems and products"
+        title="A full-stack engineer who thinks in systems and products"
         lede={`${profile.title} · ${profile.subtitle} · ${profile.experienceYears} years`}
       />
 
@@ -136,7 +143,7 @@ export default function AboutPage() {
           path="/skills"
           title="Full-stack, layer by layer"
           id="fullstack-title"
-          lede="Frontend architecture is the core; I'm comfortable owning a feature through every layer below it."
+          lede="I own a feature through every layer: the interface, the API, the services and data behind it, and the pipeline that ships it."
         />
         <ol className="flex flex-col gap-2">
           {layers.map((layer, index) => (

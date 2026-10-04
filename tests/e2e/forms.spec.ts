@@ -50,6 +50,15 @@ test.describe("contact form", () => {
     );
   });
 
+  test("hiring shortcut opens the form set to a full-time role", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("link", { name: /Hiring\? Let's Talk/ }).click();
+    await expect(page).toHaveURL(/\/contact\?type=full-time/);
+    await expect(page.getByRole("combobox", { name: /Project type/ })).toHaveText(
+      /Full-Time Opportunity/,
+    );
+  });
+
   test("sends a valid message and shows the success state", async ({ page }) => {
     await page.goto("/contact?type=full-time");
     await page.getByLabel(/^Name/).fill("Test Recruiter");

@@ -9,6 +9,6 @@ export default function Image() {
   return renderOg({
     eyebrow: "Engineering system",
     title: profile.headline,
-    subtitle: `${profile.experienceYears} years · React · Next.js · TypeScript · Full-stack`,
+    subtitle: `${profile.experienceYears} years · React · Next.js · Node.js · TypeScript · AWS`,
   });
 }

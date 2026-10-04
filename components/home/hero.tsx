@@ -14,7 +14,7 @@ export function Hero() {
         <div className="lg:col-span-6">
           <p className="mb-6 eyebrow text-accent">{profile.title}</p>
           <h1 id="hero-title" className="max-w-[16ch] text-display text-fg">
-            Building scalable, high-performance web experiences.
+            {profile.headline}
           </h1>
           <p className="mt-6 max-w-[52ch] text-body-lg text-fg-secondary">{profile.intro}</p>
           <div className="mt-8 flex flex-col gap-3 xs:flex-row">

@@ -13,7 +13,7 @@ export function personJsonLd() {
     jobTitle: profile.title,
     url: absolute("/"),
     email: `mailto:${profileLinks.email}`,
-    sameAs: [profileLinks.linkedin],
+    sameAs: [profileLinks.linkedin, profileLinks.github],
     address: { "@type": "PostalAddress", addressLocality: "Delhi NCR", addressCountry: "IN" },
     knowsAbout: [...profile.primaryStack, ...profile.focusAreas],
   };

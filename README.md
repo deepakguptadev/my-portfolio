@@ -37,16 +37,17 @@ End-to-end tests use your installed Google Chrome locally; CI installs Playwrigh
 All content is separate from UI and validated with Zod at build time — invalid content fails the
 build with a readable error.
 
-| What                                             | Where                         |
-| ------------------------------------------------ | ----------------------------- |
-| Name, intro, location, availability, About story | `content/profile.ts`          |
-| Roles and timeline                               | `content/experience.ts`       |
-| Skills by category                               | `content/skills.ts`           |
-| Engineering DNA, Performance Lab, AI section     | `content/engineering.ts`      |
-| Architecture Lab modules and tables              | `content/architecture.ts`     |
-| Diagrams (nodes, edges, lenses, traces)          | `content/graphs/*.ts`         |
-| Case studies                                     | `content/projects/<slug>.mdx` |
-| Notes                                            | `content/notes/<slug>.mdx`    |
+| What                                             | Where                                   |
+| ------------------------------------------------ | --------------------------------------- |
+| Name, intro, location, availability, About story | `content/profile.ts`                    |
+| Roles and timeline                               | `content/experience.ts`                 |
+| Skills by category                               | `content/skills.ts`                     |
+| Engineering DNA, Performance Lab, AI section     | `content/engineering.ts`                |
+| Architecture Lab modules and tables              | `content/architecture.ts`               |
+| Diagrams (nodes, edges, lenses, traces)          | `content/graphs/*.ts`                   |
+| Case studies                                     | `content/projects/<slug>.mdx`           |
+| Notes                                            | `content/notes/<slug>.mdx`              |
+| Resume PDF (served by every resume button)       | `public/resume/deepak-gupta-resume.pdf` |
 
 **Honesty rules.** Nothing is invented. Unknown facts go in a `pending` list and render as a visible
 "Content required" marker. Performance numbers stay empty until really measured. A note only gets a
@@ -59,13 +60,13 @@ Run `npm run content:status` to see what's left.
 
 Copy `.env.example` to `.env.local`. Everything optional degrades honestly:
 
-| Variable                                                   | Effect when unset                                          |
-| ---------------------------------------------------------- | ---------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                                     | Canonical URLs, sitemap and OG point at localhost          |
-| `NEXT_PUBLIC_RESUME_URL`                                   | Resume buttons open a pre-addressed email instead          |
-| `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, `RESEND_API_KEY` | Contact page shows "email me directly" instead of the form |
-| `EMAIL_TRANSPORT=console`                                  | (Dev/tests) form "sends" by logging, no email              |
-| `NEXT_PUBLIC_ANALYTICS=vercel`                             | Enables Vercel Analytics + Speed Insights                  |
+| Variable                                                   | Effect when unset                                            |
+| ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `NEXT_PUBLIC_SITE_URL`                                     | Canonical URLs, sitemap and OG point at localhost            |
+| `NEXT_PUBLIC_RESUME_URL`                                   | Resume buttons serve `public/resume/deepak-gupta-resume.pdf` |
+| `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, `RESEND_API_KEY` | Contact page shows "email me directly" instead of the form   |
+| `EMAIL_TRANSPORT=console`                                  | (Dev/tests) form "sends" by logging, no email                |
+| `NEXT_PUBLIC_ANALYTICS=vercel`                             | Enables Vercel Analytics + Speed Insights                    |
 
 ## Architecture
 
@@ -84,7 +85,7 @@ text/background pair in both themes and fails on raw hex values outside `styles/
 ## Launch checklist
 
 - [ ] Fill the items reported by `npm run content:status`
-- [ ] Resume PDF → `public/resume/…` or `NEXT_PUBLIC_RESUME_URL`
+- [x] Resume PDF → `public/resume/deepak-gupta-resume.pdf`
 - [ ] Domain + `NEXT_PUBLIC_SITE_URL`
 - [ ] Resend: verify the sending domain (SPF/DKIM), set the three contact variables, send a real test
 - [ ] Vercel: import the repo, set env vars, add a firewall rate-limit rule for the contact action

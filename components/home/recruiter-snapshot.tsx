@@ -1,9 +1,12 @@
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { CopyEmailButton } from "@/components/content/copy-email-button";
 import { SpecRows } from "@/components/content/spec-rows";
 import { ModuleHeader } from "@/components/layout/module-header";
 import { ResumeLink } from "@/components/layout/resume-link";
 import { Section } from "@/components/layout/section";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { profile } from "@/content/profile";
 
 export function RecruiterSnapshot() {
@@ -16,6 +19,11 @@ export function RecruiterSnapshot() {
         id="snapshot-title"
         actions={
           <>
+            <Button asChild size="sm">
+              <Link href="/contact?type=full-time">
+                Hiring? Let&apos;s Talk <ArrowRight aria-hidden />
+              </Link>
+            </Button>
             <CopyEmailButton size="sm" />
             <ResumeLink compact variant="secondary" size="sm" />
           </>
@@ -24,7 +32,7 @@ export function RecruiterSnapshot() {
       <SpecRows
         rows={[
           { label: "Experience", value: `${profile.experienceYears} Years` },
-          { label: "Primary stack", value: "React / Next.js / TypeScript" },
+          { label: "Primary stack", value: profile.primaryStack.join(" / ") },
           { label: "Backend", value: profile.backendStack.join(" / ") },
           { label: "Location", value: profile.location },
           { label: "Availability", value: <Badge tone="success">{profile.availability}</Badge> },

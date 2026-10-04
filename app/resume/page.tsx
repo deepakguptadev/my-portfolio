@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ContentRequired } from "@/components/content/content-required";
 import { SpecRows } from "@/components/content/spec-rows";
@@ -6,6 +7,7 @@ import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { ResumeLink } from "@/components/layout/resume-link";
 import { Badge, Tag } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { UrlTabs } from "@/components/ui/url-tabs";
 import { experience } from "@/content/experience";
 import { profile } from "@/content/profile";
@@ -164,10 +166,20 @@ export default async function ResumePage() {
         path="/resume"
         title={profile.name}
         lede={`${profile.title} · ${profile.subtitle}`}
-        actions={<ResumeLink />}
+        actions={
+          <>
+            <ResumeLink />
+            <Button asChild variant="secondary">
+              <Link href="/contact?type=full-time">
+                Hiring? Let&apos;s Talk <ArrowRight aria-hidden />
+              </Link>
+            </Button>
+          </>
+        }
       >
         <p className="hidden text-small text-fg-secondary print:block">
-          {profileLinks.email} · {profileLinks.linkedin} · {profile.location}
+          {profileLinks.email} · {profileLinks.linkedin} · {profileLinks.github} ·{" "}
+          {profile.location}
         </p>
       </PageHeader>
       <Container width="wide" className="pb-16 md:pb-24">

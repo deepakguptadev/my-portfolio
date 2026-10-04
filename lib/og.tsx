@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { siteConfig } from "./site-config";
 import { parseColorTokens } from "./tokens";
 
 export const ogSize = { width: 1200, height: 630 };
@@ -71,8 +72,8 @@ export function renderOg({ eyebrow, title, subtitle }: OgInput) {
           color: tokens["text-secondary"],
         }}
       >
-        <span>Deepak Gupta</span>
-        <span>Senior Software Engineer</span>
+        <span>{siteConfig.name}</span>
+        <span>{siteConfig.title}</span>
       </div>
     </div>,
     ogSize,

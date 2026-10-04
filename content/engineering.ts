@@ -55,11 +55,12 @@ export const engineering = defineContent("engineering", engineeringSchema, {
     {
       id: "full-stack",
       label: "Full-Stack",
-      summary: "Comfortable across the boundary: UI, APIs, data and the cloud they run on.",
+      summary: "Own the feature across every layer: UI, APIs, data and the cloud they run on.",
       practices: [
         "Design API contracts with the frontend's needs in mind",
         "Node.js services with Express or NestJS",
         "Containerized deploys on AWS",
+        "GitLab CI/CD from merge request to production monitoring",
       ],
       related: ["architecture", "performance"],
       draft: true,

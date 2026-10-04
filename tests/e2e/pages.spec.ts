@@ -68,8 +68,8 @@ test.describe("module pages", () => {
   });
 
   test("experience deep link expands the role", async ({ page }) => {
-    await page.goto("/experience#atcs-nagarro");
-    await expect(page.getByRole("button", { name: /Engineer\s*ATCS \/ Nagarro/ })).toHaveAttribute(
+    await page.goto("/experience#nagarro-engineer");
+    await expect(page.getByRole("button", { name: /^Engineer\s*Nagarro$/ })).toHaveAttribute(
       "aria-expanded",
       "true",
     );

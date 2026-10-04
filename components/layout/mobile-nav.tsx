@@ -99,6 +99,15 @@ export function MobileNav({ className, pathname }: { className?: string; pathnam
                 LinkedIn <ArrowUpRight aria-hidden className="size-3.5" />
                 <span className="sr-only">(opens in a new tab)</span>
               </a>
+              <a
+                href={profileLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-fg-secondary hover:text-fg"
+              >
+                GitHub <ArrowUpRight aria-hidden className="size-3.5" />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
               <a href={profileLinks.emailHref} className="text-fg-secondary hover:text-fg">
                 Email
               </a>

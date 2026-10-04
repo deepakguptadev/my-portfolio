@@ -50,21 +50,13 @@ const navigate: Command[] = [
 ];
 
 const actions: Command[] = [
-  profileLinks.resumeUrl
-    ? {
-        id: "resume",
-        label: "Download Resume",
-        group: "Actions",
-        keywords: ["cv", "pdf"],
-        action: { type: "external", href: profileLinks.resumeUrl, newTab: true },
-      }
-    : {
-        id: "resume",
-        label: "Request Resume by Email",
-        group: "Actions",
-        keywords: ["download resume", "cv", "pdf"],
-        action: { type: "external", href: profileLinks.resumeRequestHref, newTab: false },
-      },
+  {
+    id: "resume",
+    label: "Download Resume",
+    group: "Actions",
+    keywords: ["cv", "pdf"],
+    action: { type: "external", href: profileLinks.resumeUrl, newTab: true },
+  },
   {
     id: "copy-email",
     label: "Copy Email Address",
@@ -85,6 +77,13 @@ const actions: Command[] = [
     group: "Actions",
     keywords: ["profile", "social"],
     action: { type: "external", href: profileLinks.linkedin, newTab: true },
+  },
+  {
+    id: "github",
+    label: "Open GitHub",
+    group: "Actions",
+    keywords: ["code", "repositories", "profile", "social"],
+    action: { type: "external", href: profileLinks.github, newTab: true },
   },
 ];
 

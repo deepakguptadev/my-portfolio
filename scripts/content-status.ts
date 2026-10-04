@@ -7,7 +7,6 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { experience } from "@/content/experience";
 import { profile } from "@/content/profile";
-import { profileLinks } from "@/lib/profile-links";
 
 type Section = { title: string; items: string[] };
 const sections: Section[] = [];
@@ -46,7 +45,6 @@ sections.push({
   title: "Site configuration (.env — see .env.example)",
   items: [
     ...(process.env.NEXT_PUBLIC_SITE_URL ? [] : ["NEXT_PUBLIC_SITE_URL (production domain)"]),
-    ...(profileLinks.resumeUrl ? [] : ["NEXT_PUBLIC_RESUME_URL (resume PDF)"]),
     ...(process.env.CONTACT_TO_EMAIL && process.env.RESEND_API_KEY
       ? []
       : ["Contact form email: CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL, RESEND_API_KEY"]),

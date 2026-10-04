@@ -29,6 +29,12 @@ export function ContactCta() {
                 <span className="sr-only">(opens in a new tab)</span>
               </a>
             </Button>
+            <Button asChild size="lg" variant="secondary">
+              <a href={profileLinks.github} target="_blank" rel="noopener noreferrer">
+                GitHub <ArrowUpRight aria-hidden />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            </Button>
             <ResumeLink size="lg" variant="ghost" />
           </div>
         </div>

@@ -83,7 +83,7 @@ export default function ArchitecturePage() {
         index="04"
         path="/architecture"
         title="Architecture Lab"
-        lede="How I structure frontend systems, explained interactively. Pick a module, then hover, select or use the arrow keys to explore each diagram."
+        lede="How I structure web systems, from the component tree to the API, explained interactively. Pick a module, then hover, select or use the arrow keys to explore each diagram."
       />
       <Container width="wide" className="pb-16 md:pb-24">
         <UrlTabs

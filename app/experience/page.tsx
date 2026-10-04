@@ -8,13 +8,13 @@ import { ResumeLink } from "@/components/layout/resume-link";
 import { Tag } from "@/components/ui/badge";
 import { experience } from "@/content/experience";
 import { profile } from "@/content/profile";
-import { formatPeriod } from "@/lib/format";
+import { formatPartialDate, formatPeriod } from "@/lib/format";
 import type { Role } from "@/lib/schemas/content";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Experience",
-  description: `Deepak Gupta's engineering journey: ${profile.experienceYears} years building frontend and full-stack web applications.`,
+  description: `Deepak Gupta's engineering journey: ${profile.experienceYears} years building full-stack web applications.`,
   path: "/experience",
 });
 
@@ -63,8 +63,8 @@ function RoleDetails({ role }: { role: Role }) {
 }
 
 export default function ExperiencePage() {
-  const current = experience.find((role) => role.period.end === null);
-  const companies = new Set(experience.map((role) => role.company).filter(Boolean));
+  // Newest first, so the latest role sets the level even between jobs.
+  const [latest] = experience;
 
   return (
     <>
@@ -78,11 +78,14 @@ export default function ExperiencePage() {
         <SpecRows
           rows={[
             { label: "Experience", value: `${profile.experienceYears} Years` },
-            { label: "Since", value: experience[experience.length - 1].period.start },
-            { label: "Current level", value: current?.title ?? <ContentRequired inline /> },
+            {
+              label: "Since",
+              value: formatPartialDate(experience[experience.length - 1].period.start),
+            },
+            { label: "Current level", value: latest.title },
           ]}
         />
-        {companies.size < experience.length && (
+        {experience.some((role) => role.pending.length > 0) && (
           <p className="mt-4 text-small text-fg-muted">
             Some details are still being added; gaps are marked rather than guessed.
           </p>

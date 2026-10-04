@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { commandGroups, commands, commandsByGroup } from "./commands";
 import { primaryNav, secondaryNav } from "./navigation";
@@ -31,11 +33,11 @@ describe("command registry", () => {
     }
   });
 
-  it("offers a resume action that never points at a fake URL", () => {
+  it("offers a resume download that never points at a missing file", () => {
     const resume = commands.find((command) => command.id === "resume");
     expect(resume?.action.type).toBe("external");
-    if (resume?.action.type === "external" && !process.env.NEXT_PUBLIC_RESUME_URL) {
-      expect(resume.action.href.startsWith("mailto:")).toBe(true);
+    if (resume?.action.type === "external" && resume.action.href.startsWith("/")) {
+      expect(existsSync(join(process.cwd(), "public", resume.action.href))).toBe(true);
     }
   });
 

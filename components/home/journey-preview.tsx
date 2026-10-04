@@ -26,7 +26,7 @@ export function JourneyPreview() {
           </Button>
         }
       />
-      <ol className="grid gap-px overflow-hidden rounded-md border border-line bg-line md:grid-cols-3">
+      <ol className="grid gap-px overflow-hidden rounded-md border border-line bg-line md:grid-cols-2 lg:grid-cols-4">
         {roles.map((role, index) => (
           <li key={role.id} className="relative flex flex-col bg-surface p-6">
             <div className="mb-5 flex items-center gap-3">

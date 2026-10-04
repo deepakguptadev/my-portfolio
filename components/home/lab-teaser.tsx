@@ -13,7 +13,7 @@ export function LabTeaser() {
         path="/architecture"
         title="Architecture lab"
         id="lab-title"
-        lede="Interactive explorations of how I structure frontend applications, rendering, micro frontends and APIs."
+        lede="Interactive explorations of how I structure React applications, rendering, micro frontends and APIs."
       />
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {architecture.modules.map((module, index) => {

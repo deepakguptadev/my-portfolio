@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { profile } from "@/content/profile";
 import { primaryNav } from "@/lib/navigation";
 import { profileLinks } from "@/lib/profile-links";
 import { Container } from "./container";
@@ -16,9 +17,9 @@ export function SiteFooter() {
         <div className="md:col-span-5">
           <p className="eyebrow text-fg">Deepak Gupta</p>
           <p className="mt-3 text-small text-fg-secondary">
-            Senior Software Engineer
+            {profile.title}
             <br />
-            Frontend &amp; Full-Stack Engineering
+            {profile.subtitle}
           </p>
         </div>
 
@@ -46,6 +47,17 @@ export function SiteFooter() {
                 className={linkClasses}
               >
                 LinkedIn <ArrowUpRight aria-hidden className="size-3.5" />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={profileLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClasses}
+              >
+                GitHub <ArrowUpRight aria-hidden className="size-3.5" />
                 <span className="sr-only">(opens in a new tab)</span>
               </a>
             </li>

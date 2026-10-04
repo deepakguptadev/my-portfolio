@@ -1,4 +1,4 @@
-import { Download, Mail } from "lucide-react";
+import { Download } from "lucide-react";
 import type { ComponentProps } from "react";
 import { Button } from "@/components/ui/button";
 import { profileLinks } from "@/lib/profile-links";
@@ -8,31 +8,14 @@ type ResumeLinkProps = Omit<ComponentProps<typeof Button>, "asChild" | "children
   compact?: boolean;
 };
 
-/**
- * Downloads the configured resume, or — until a PDF is supplied — opens a
- * pre-addressed email asking for it. Never renders a dead link.
- */
+/** Opens the resume PDF in a new tab, where it can be viewed or saved. */
 export function ResumeLink({ compact = false, ...props }: ResumeLinkProps) {
-  const { resumeUrl, resumeRequestHref } = profileLinks;
-
-  if (resumeUrl) {
-    return (
-      <Button asChild {...props}>
-        <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
-          <Download aria-hidden />
-          {compact ? "Resume" : "Download Resume"}
-          <span className="sr-only"> (PDF, opens in a new tab)</span>
-        </a>
-      </Button>
-    );
-  }
-
   return (
     <Button asChild {...props}>
-      <a href={resumeRequestHref}>
-        <Mail aria-hidden />
-        {compact ? "Resume" : "Request Resume"}
-        <span className="sr-only"> by email</span>
+      <a href={profileLinks.resumeUrl} target="_blank" rel="noopener noreferrer">
+        <Download aria-hidden />
+        {compact ? "Resume" : "Download Resume"}
+        <span className="sr-only"> (PDF, opens in a new tab)</span>
       </a>
     </Button>
   );
