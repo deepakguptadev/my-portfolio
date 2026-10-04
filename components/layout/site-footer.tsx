@@ -11,7 +11,7 @@ const linkClasses =
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line">
+    <footer className="border-t border-line print:hidden">
       <Container width="wide" className="grid gap-12 py-12 md:grid-cols-12 md:py-16">
         <div className="md:col-span-5">
           <p className="eyebrow text-fg">Deepak Gupta</p>

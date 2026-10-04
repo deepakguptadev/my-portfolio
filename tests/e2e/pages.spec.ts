@@ -9,6 +9,10 @@ const pages = [
   "/architecture",
   "/engineering",
   "/skills",
+  "/notes",
+  "/notes/nextjs-rendering-strategies",
+  "/resume",
+  "/contact",
 ];
 
 test.describe("module pages", () => {
@@ -18,11 +22,7 @@ test.describe("module pages", () => {
     }) => {
       const errors: string[] = [];
       page.on("pageerror", (e) => errors.push(e.message));
-      // TODO(M7): drop the 404 exemption once /notes, /resume and /contact exist
-      // (until then, prefetches of those nav links 404).
-      page.on("console", (m) => {
-        if (m.type() === "error" && !m.text().includes("404")) errors.push(m.text());
-      });
+      page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
 
       for (const scheme of ["light", "dark"] as const) {
         await page.emulateMedia({ colorScheme: scheme });

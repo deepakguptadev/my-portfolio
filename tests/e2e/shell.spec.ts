@@ -103,7 +103,10 @@ test.describe("site shell", () => {
     test(`no console errors or hydration warnings on ${path}`, async ({ page }) => {
       const errors: string[] = [];
       page.on("console", (m) => {
-        if (m.type() === "error" && !m.text().includes("404")) errors.push(m.text());
+        if (m.type() !== "error") return;
+        // The deliberate 404 page logs its own resource status.
+        if (path === "/does-not-exist" && m.text().includes("404")) return;
+        errors.push(m.text());
       });
       page.on("pageerror", (e) => errors.push(e.message));
       await page.goto(path);

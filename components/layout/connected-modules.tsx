@@ -7,7 +7,7 @@ import { Container } from "./container";
 export function ConnectedModules({ items }: { items: ModuleRef[] }) {
   if (items.length === 0) return null;
   return (
-    <aside aria-labelledby="connected-modules" className="pb-16 md:pb-24">
+    <aside aria-labelledby="connected-modules" className="pb-16 md:pb-24 print:hidden">
       <Container width="wide">
         <div className="border-t border-line pt-10">
           <h2 id="connected-modules" className="mb-4 eyebrow text-fg-muted">

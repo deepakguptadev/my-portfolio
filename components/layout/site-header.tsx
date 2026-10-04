@@ -70,7 +70,7 @@ export function SiteHeader() {
       <header
         data-scrolled={scrolled}
         className={cn(
-          "sticky top-0 z-sticky h-16 border-b transition-[background-color,border-color] duration-small ease-standard",
+          "sticky top-0 z-sticky h-16 border-b transition-[background-color,border-color] duration-small ease-standard print:hidden",
           scrolled ? "border-line bg-canvas/85 backdrop-blur-[8px]" : "border-transparent",
         )}
       >

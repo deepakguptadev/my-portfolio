@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
+import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 
 export type UrlTab = { value: string; label: string; content: ReactNode };
@@ -12,6 +13,8 @@ type UrlTabsProps = {
   tabs: UrlTab[];
   label: string;
   listClassName?: string;
+  /** Keep every panel in the DOM (hidden with CSS) — e.g. so print shows all tabs. */
+  forceMount?: boolean;
 };
 
 function TabsView({
@@ -20,6 +23,7 @@ function TabsView({
   value,
   onChange,
   listClassName,
+  forceMount,
 }: Omit<UrlTabsProps, "param"> & { value: string; onChange?: (value: string) => void }) {
   return (
     <Tabs value={value} onValueChange={onChange}>
@@ -31,7 +35,15 @@ function TabsView({
         ))}
       </TabsList>
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value} className="pt-8">
+        <TabsContent
+          key={tab.value}
+          value={tab.value}
+          forceMount={forceMount || undefined}
+          className={cn(
+            "pt-8",
+            forceMount && "data-[state=inactive]:hidden print:data-[state=inactive]:block",
+          )}
+        >
           {tab.content}
         </TabsContent>
       ))}
