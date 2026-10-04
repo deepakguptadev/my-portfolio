@@ -4,7 +4,29 @@
       "Bash(npm -v)",
       "Bash(pnpm -v)",
       "Bash(git --version)",
-      "Bash(npx --yes create-next-app@latest . --ts --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --turbopack --yes)"
+      "Bash(npx --yes create-next-app@latest . --ts --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --turbopack --yes)",
+      "Bash(npm i *)",
+      "Bash(grep -m1 -A25 \"While resolving\" /Users/apple/.npm/_logs/2026-10-04T16_21_04_886Z-eresolve-report.txt)",
+      "Read(//Users/apple/.npm/_logs/**)",
+      "Bash(python3 -)",
+      "Bash(npm run *)",
+      "Bash(echo \"format exit $?\")",
+      "Bash(xargs sed -i '' -E 's/\\(className=\"[^\"]*\\)\\\\boverline\\\\b/\\\\1eyebrow/g; s/@utility overline/@utility eyebrow/')",
+      "Bash(npm test *)",
+      "Bash(ls /Applications | grep -i -E \"chrome|chromium|edge|brave\" ; ls ~/Library/Caches/ms-playwright 2>/dev/null)",
+      "Read(//Applications/**)",
+      "Read(//Users/apple/Library/Caches/**)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --hide-scrollbars --blink-settings=preferredColorScheme=1 --screenshot=/private/tmp/claude-501/-Users-apple-Developer-my-portfolio/96f6a522-f3e0-4a2b-b957-1d77711332a6/scratchpad/ds-light-top.png --window-size=1440,1800 --virtual-time-budget=4000 http://localhost:3124/design-system)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --hide-scrollbars --blink-settings=preferredColorScheme=1 --screenshot=/private/tmp/claude-501/-Users-apple-Developer-my-portfolio/96f6a522-f3e0-4a2b-b957-1d77711332a6/scratchpad/home-light.png --window-size=1440,900 --virtual-time-budget=4000 http://localhost:3124/)",
+      "Bash(pkill -f \"next dev -p 3124\")",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'feat: foundation and design system *)",
+      "Bash(cd /Users/apple/Developer/my-portfolio/node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions && sed -n '/^## Reference/,/^## Examples/p' error.md | head -60; grep -n \"global-not-found\\\\|root not-found\\\\|app/not-found\" not-found.md | head)",
+      "Bash(npx playwright *)"
+    ],
+    "additionalDirectories": [
+      "/Users/apple/Developer/my-portfolio",
+      "/Users/apple/Developer/my-portfolio/node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions"
     ]
   }
 }
