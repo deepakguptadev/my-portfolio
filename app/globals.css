@@ -1,26 +1,271 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* `dark:` matches an explicit dark choice, or the OS theme when none is stored. */
+@custom-variant dark {
+  :root[data-theme="dark"] & {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) & {
+      @slot;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * Tailwind theme → tokens. Default palettes/scales are reset with `initial`
+ * so only design-system values exist as utilities. This block maps
+ * theme-aware tokens (styles/tokens.css) and is inlined into utilities.
+ */
+@theme inline {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-canvas: var(--bg-primary);
+  --color-canvas-alt: var(--bg-secondary);
+  --color-surface: var(--surface-primary);
+  --color-surface-2: var(--surface-secondary);
+  --color-surface-3: var(--surface-tertiary);
+  --color-fg: var(--text-primary);
+  --color-fg-secondary: var(--text-secondary);
+  --color-fg-muted: var(--text-muted);
+  --color-line: var(--border-default);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--accent-contrast);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+  --color-grid: var(--graph-grid);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --shadow-*: initial;
+  --shadow-sm: var(--elevation-sm);
+  --shadow-md: var(--elevation-md);
+  --shadow-lg: var(--elevation-lg);
+}
+
+/* Static scales — always emitted as :root variables of the same names.
+ * Fluid type: clamp() interpolates between 390px and 1280px viewports. */
+@theme static {
+  --text-*: initial;
+  --text-display: clamp(2.5rem, 1.8425rem + 2.697vw, 4rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: var(--tracking-display);
+  --text-display--font-weight: 600;
+  --text-h1: clamp(2.125rem, 1.7416rem + 1.573vw, 3rem);
+  --text-h1--line-height: 1.15;
+  --text-h1--letter-spacing: var(--tracking-tight);
+  --text-h1--font-weight: 600;
+  --text-h2: clamp(1.75rem, 1.4214rem + 1.348vw, 2.5rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: var(--tracking-tight);
+  --text-h2--font-weight: 600;
+  --text-h3: clamp(1.5rem, 1.2809rem + 0.899vw, 2rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: var(--tracking-tight);
+  --text-h3--font-weight: 600;
+  --text-h4: clamp(1.25rem, 1.1404rem + 0.449vw, 1.5rem);
+  --text-h4--line-height: 1.2;
+  --text-h4--font-weight: 600;
+  --text-body-lg: clamp(1.125rem, 1.0702rem + 0.225vw, 1.25rem);
+  --text-body-lg--line-height: 1.6;
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.4;
+  --text-code: clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem);
+  --text-code--line-height: 1.5;
+
+  --tracking-*: initial;
+  --tracking-tight: -0.02em;
+  --tracking-display: -0.03em;
+  --tracking-overline: 0.06em;
+
+  --radius-*: initial;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --ease-*: initial;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  --breakpoint-xs: 30rem;
+
+  --container-prose: 680px;
+  --container-content: 1200px;
+  --container-wide: 1280px;
+
+  --animate-fade-in: fade-in var(--dur-small) var(--ease-standard);
+  --animate-fade-out: fade-out var(--dur-small) var(--ease-exit);
+  --animate-overlay-in: fade-in var(--dur-medium) var(--ease-standard);
+  --animate-dialog-in: dialog-in var(--dur-medium) var(--ease-emphasized);
+  --animate-fade-up: fade-up var(--dur-small) var(--ease-standard);
+  --animate-collapse-down: collapse-down var(--dur-medium) var(--ease-standard);
+  --animate-collapse-up: collapse-up var(--dur-medium) var(--ease-standard);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      scale: 0.98;
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      translate: 0 4px;
+    }
+  }
+  @keyframes collapse-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes collapse-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/* ── Token-backed utilities without a Tailwind theme namespace ──────── */
+@utility duration-micro {
+  transition-duration: var(--dur-micro);
+}
+@utility duration-small {
+  transition-duration: var(--dur-small);
+}
+@utility duration-medium {
+  transition-duration: var(--dur-medium);
+}
+@utility duration-large {
+  transition-duration: var(--dur-large);
+}
+
+@utility z-raised {
+  z-index: var(--z-raised);
+}
+@utility z-sticky {
+  z-index: var(--z-sticky);
+}
+@utility z-dropdown {
+  z-index: var(--z-dropdown);
+}
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+@utility z-palette {
+  z-index: var(--z-palette);
+}
+@utility z-toast {
+  z-index: var(--z-toast);
+}
+@utility z-skip {
+  z-index: var(--z-skip);
+}
+
+/* Mono uppercase "eyebrow" label (Tailwind already owns `overline`) — module IDs, spec keys, diagram tags. */
+@utility eyebrow {
+  font-family: --theme(--font-mono);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  font-weight: 500;
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+}
+
+/* Faint dot grid behind diagram canvases. */
+@utility bg-dot-grid {
+  background-image: radial-gradient(var(--graph-grid) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Visible keyboard focus ring, reusable on composite widgets. */
+@utility focus-ring {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-padding-top: calc(var(--header-height) + 16px);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: --theme(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--text-primary);
+  }
+
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: --theme(--font-mono);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }

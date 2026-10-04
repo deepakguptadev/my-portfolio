@@ -1,0 +1,97 @@
+/*
+ * Design tokens — the single source of raw visual values.
+ * Components consume these via Tailwind utilities (mapped in globals.css)
+ * or var(--token). Raw hex values must not appear anywhere else
+ * (enforced by lib/tokens.test.ts).
+ *
+ * Colors are declared once as light-dark(<light>, <dark>). The active
+ * scheme comes from `color-scheme`: the system preference by default,
+ * or forced by data-theme on <html> (set before paint by ThemeScript).
+ */
+
+:root {
+  color-scheme: light dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* ── Color ──────────────────────────────────────────────────────────── */
+:root {
+  --bg-primary: light-dark(#f8f9fb, #0c0e12);
+  --bg-secondary: light-dark(#ffffff, #11141a);
+
+  --surface-primary: light-dark(#ffffff, #151922);
+  --surface-secondary: light-dark(#f1f3f6, #1b202a);
+  /* Light value added: a third level for nested surfaces, same cool-gray ramp. */
+  --surface-tertiary: light-dark(#e9ecf1, #202631);
+
+  --text-primary: light-dark(#111318, #f4f6f8);
+  --text-secondary: light-dark(#424852, #c2c8d1);
+  --text-muted: light-dark(#69717d, #8e97a5);
+
+  --border-default: light-dark(#dce1e7, #29303b);
+  --border-strong: light-dark(#c5ccd5, #39424f);
+
+  --accent: light-dark(#2457d6, #6f96ff);
+  --accent-hover: light-dark(#1746bd, #88a8ff);
+  --accent-soft: light-dark(#e8eeff, #17264c);
+  /* Text on accent fills. White on #6F96FF fails 4.5:1, so dark uses near-black. */
+  --accent-contrast: light-dark(#ffffff, #0c0e12);
+
+  --success: light-dark(#18794e, #48c78e);
+  --warning: light-dark(#9a6700, #e5b85c);
+  --error: light-dark(#c73535, #ff7777);
+  --info: light-dark(#2457d6, #6f96ff);
+
+  --focus-ring: var(--accent);
+  --graph-grid: color-mix(in srgb, var(--border-default) 50%, transparent);
+
+  /* Elevation (mapped to shadow-* utilities): subtle in light; in dark,
+   * layered surfaces + borders carry elevation. */
+  --elevation-sm: 0 1px 2px light-dark(rgb(17 19 24 / 0.06), rgb(0 0 0 / 0.4));
+  --elevation-md:
+    0 4px 12px light-dark(rgb(17 19 24 / 0.08), rgb(0 0 0 / 0.45)),
+    0 1px 2px light-dark(rgb(17 19 24 / 0.04), rgb(0 0 0 / 0.3));
+  --elevation-lg:
+    0 16px 40px light-dark(rgb(17 19 24 / 0.12), rgb(0 0 0 / 0.6)),
+    0 2px 6px light-dark(rgb(17 19 24 / 0.06), rgb(0 0 0 / 0.4));
+}
+
+/* ── Borders, motion durations, layering, layout ────────────────────── */
+/* Radius, easing, tracking and container widths live in the @theme block
+ * of app/globals.css (emitted as :root variables of the same names). */
+:root {
+  --border-hairline: 1px;
+  --border-emphasis: 1.5px;
+  --border-active: 2px;
+
+  --dur-micro: 120ms;
+  --dur-small: 200ms;
+  --dur-medium: 320ms;
+  --dur-large: 520ms;
+
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 100;
+  --z-dropdown: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-palette: 500;
+  --z-toast: 600;
+  --z-skip: 700;
+
+  --header-height: 64px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-micro: 0.01ms;
+    --dur-small: 0.01ms;
+    --dur-medium: 0.01ms;
+    --dur-large: 0.01ms;
+  }
+}
