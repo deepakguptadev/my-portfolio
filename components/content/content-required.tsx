@@ -42,7 +42,7 @@ export function ContentRequired({
         className,
       )}
     >
-      <p className="eyebrow text-fg-muted">{label}</p>
+      <p className="eyebrow text-fg-secondary">{label}</p>
       {hint && <p className="mt-1 text-small text-fg-secondary">{hint}</p>}
     </div>
   );

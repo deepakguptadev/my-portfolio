@@ -50,7 +50,14 @@ export const dnaGraph = defineContent("graphs/dna", systemGraph, {
       from: "deepak",
       to: principle.id,
       kind: "dependency" as const,
+      label: "principle",
     })),
-    ...[...links].map(([id, { from, to }]) => ({ id, from, to, kind: "event" as const })),
+    ...[...links].map(([id, { from, to }]) => ({
+      id,
+      from,
+      to,
+      kind: "event" as const,
+      label: "related",
+    })),
   ],
 });

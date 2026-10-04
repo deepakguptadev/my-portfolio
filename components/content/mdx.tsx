@@ -89,7 +89,7 @@ export const mdxComponents: MDXComponents = {
   figcaption: ({ className, ...props }) => (
     <figcaption
       className={cn(
-        "mb-0 rounded-t-md border border-b-0 border-line bg-surface-2 px-4 py-2 font-mono text-caption text-fg-muted [&+div_pre]:rounded-t-none",
+        "mb-0 rounded-t-md border border-b-0 border-line bg-surface-2 px-4 py-2 font-mono text-caption text-fg-secondary [&+div_pre]:rounded-t-none",
         className,
       )}
       {...props}

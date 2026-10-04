@@ -34,6 +34,9 @@ import { Skeleton, StatePanel } from "@/components/ui/feedback";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip } from "@/components/ui/tooltip";
+import { SystemGraph } from "@/components/viz/graph/system-graph";
+import { WorkflowDiagram } from "@/components/viz/workflow-diagram";
+import { graphs } from "@/content/graphs";
 import { getNote, getNotes, getProjects } from "@/lib/content";
 import { parseColorTokens } from "@/lib/tokens";
 import { FormDemo, ToastDemo } from "./demos";
@@ -492,6 +495,36 @@ export default async function DesignSystemPage() {
           }))}
         />
       </Section>
+      <Section width="wide" aria-labelledby="ds-viz">
+        <ModuleHeader
+          index="11"
+          path="components/viz"
+          title="Diagrams"
+          id="ds-viz"
+          lede="One graph engine for every diagram. Hover or Tab into a diagram and use the arrow keys; below 640px each becomes a stacked list."
+        />
+        <Block title="Hero — inspector below">
+          <div className="max-w-xl">
+            <SystemGraph graph={graphs.hero} aspectRatio={4 / 3.4} inspector="below" />
+          </div>
+        </Block>
+        <Block title="Engineering DNA — straight routing">
+          <SystemGraph graph={graphs.dna} aspectRatio={16 / 11} routing="straight" arrows={false} />
+        </Block>
+        <Block title="Micro frontends — lenses">
+          <SystemGraph graph={graphs["micro-frontends"]} aspectRatio={16 / 9} />
+        </Block>
+        <Block title="API architecture — request trace">
+          <SystemGraph graph={graphs["api-architecture"]} aspectRatio={4 / 3} showTrace />
+        </Block>
+        <Block title="Workflow strip">
+          <WorkflowDiagram
+            label="Quality inspection workflow"
+            steps={projects[0]?.meta.workflow ?? []}
+          />
+        </Block>
+      </Section>
+
       <Section width="wide" aria-labelledby="ds-mdx">
         <ModuleHeader
           index="10"

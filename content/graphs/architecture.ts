@@ -245,7 +245,7 @@ export const microFrontendsGraph = defineContent("graphs/micro-frontends", syste
       kind: "module" as const,
       summary: `Feature area owned and deployed by Team ${r.toUpperCase()}.`,
       details: { responsibility: "Exposes modules via a remoteEntry manifest." },
-      layout: { x: 18 + i * 32, y: 50 },
+      layout: { x: 20 + i * 30, y: 46 },
       layer: 1,
     })),
     {
@@ -254,7 +254,7 @@ export const microFrontendsGraph = defineContent("graphs/micro-frontends", syste
       kind: "module",
       summary: "Singletons like React and the design system, negotiated at runtime.",
       details: { tradeoffs: ["Version drift across remotes", "Must agree on singleton ranges"] },
-      layout: { x: 14, y: 90 },
+      layout: { x: 30, y: 84 },
       layer: 2,
     },
     {
@@ -262,7 +262,7 @@ export const microFrontendsGraph = defineContent("graphs/micro-frontends", syste
       label: "Auth / Session",
       kind: "api",
       summary: "Session owned by the host and passed to remotes.",
-      layout: { x: 38, y: 90 },
+      layout: { x: 14, y: 10 },
       layer: 2,
     },
     {
@@ -270,7 +270,7 @@ export const microFrontendsGraph = defineContent("graphs/micro-frontends", syste
       label: "Event Bus",
       kind: "component",
       summary: "Loose, typed events for cross-remote communication.",
-      layout: { x: 62, y: 90 },
+      layout: { x: 70, y: 95 },
       layer: 2,
     },
     {
@@ -278,7 +278,7 @@ export const microFrontendsGraph = defineContent("graphs/micro-frontends", syste
       label: "Remote CDN",
       kind: "external",
       summary: "Hosts each remote's versioned bundles and manifest.",
-      layout: { x: 86, y: 90 },
+      layout: { x: 86, y: 10 },
       layer: 2,
     },
   ],
@@ -302,7 +302,6 @@ export const microFrontendsGraph = defineContent("graphs/micro-frontends", syste
       to: "events",
       kind: "event" as const,
     })),
-    { id: "host-shared", from: "host", to: "shared", kind: "dependency" },
     { id: "host-auth", from: "host", to: "auth", kind: "request" },
     { id: "cdn-host", from: "cdn", to: "host", kind: "dataFlow", label: "remoteEntry.js" },
   ],
@@ -321,8 +320,8 @@ export const microFrontendsGraph = defineContent("graphs/micro-frontends", syste
       label: "Shared dependencies",
       note: "React and the design system load once as singletons so remotes don't each ship their own copy.",
       emphasize: {
-        nodes: ["shared", "host"],
-        edges: ["a-shared", "b-shared", "c-shared", "host-shared"],
+        nodes: ["shared", "remote-a", "remote-b", "remote-c"],
+        edges: ["a-shared", "b-shared", "c-shared"],
       },
     },
     {
@@ -341,7 +340,7 @@ export const microFrontendsGraph = defineContent("graphs/micro-frontends", syste
       id: "versioning",
       label: "Version compatibility",
       note: "Shared singletons need agreed semver ranges; contracts between host and remotes are versioned.",
-      emphasize: { nodes: ["shared"], edges: ["a-shared", "b-shared", "c-shared", "host-shared"] },
+      emphasize: { nodes: ["shared"], edges: ["a-shared", "b-shared", "c-shared"] },
     },
     {
       id: "routing",

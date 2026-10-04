@@ -117,6 +117,8 @@
   --animate-fade-up: fade-up var(--dur-small) var(--ease-standard);
   --animate-collapse-down: collapse-down var(--dur-medium) var(--ease-standard);
   --animate-collapse-up: collapse-up var(--dur-medium) var(--ease-standard);
+  /* Plays once when a data-flow edge becomes active; never loops. */
+  --animate-dash-flow: dash-flow var(--dur-large) linear;
   --animate-sheet-in: sheet-in var(--dur-medium) var(--ease-emphasized);
   --animate-sheet-out: sheet-out var(--dur-small) var(--ease-exit);
 
@@ -140,6 +142,14 @@
     from {
       opacity: 0;
       translate: 0 4px;
+    }
+  }
+  @keyframes dash-flow {
+    from {
+      stroke-dashoffset: 42;
+    }
+    to {
+      stroke-dashoffset: 0;
     }
   }
   @keyframes sheet-in {

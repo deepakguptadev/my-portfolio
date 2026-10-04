@@ -68,4 +68,21 @@ describe("token discipline", () => {
 
     expect(offenders).toEqual([]);
   });
+
+  // text-muted on surface-secondary is 4.43:1 in light mode (below 4.5).
+  it("never puts muted text directly on surface-2", () => {
+    const offenders = ["app", "components"]
+      .flatMap((dir) => walk(join(root, dir)))
+      .filter((file) => file.endsWith(".tsx"))
+      .flatMap((file) =>
+        [...readFileSync(file, "utf8").matchAll(/className=(?:"([^"]*)"|\{[^}]*?"([^"]*)")/g)]
+          .map((match) => match[1] ?? match[2])
+          .filter(
+            (classes) =>
+              /(^|\s)bg-surface-2(\s|$)/.test(classes) && /(^|\s)text-fg-muted(\s|$)/.test(classes),
+          )
+          .map((classes) => `${relative(root, file)}: ${classes}`),
+      );
+    expect(offenders).toEqual([]);
+  });
 });

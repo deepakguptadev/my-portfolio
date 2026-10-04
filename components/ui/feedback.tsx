@@ -29,7 +29,7 @@ export function StatePanel({ icon: Icon, title, description, action, className }
         className,
       )}
     >
-      <span className="mb-4 flex size-10 items-center justify-center rounded-md border border-line bg-surface-2 text-fg-muted">
+      <span className="mb-4 flex size-10 items-center justify-center rounded-md border border-line bg-surface-2 text-fg-secondary">
         <Icon aria-hidden className="size-5" />
       </span>
       <p className="text-body font-medium text-fg">{title}</p>
