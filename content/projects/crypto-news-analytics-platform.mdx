@@ -1,0 +1,92 @@
+export const metadata = {
+  title: "Cryptocurrency News & Market Analytics Platform",
+  shortTitle: "Crypto News & Analytics",
+  summary:
+    "A large-scale React platform for crypto news, blockchain updates, market trends and educational content, built for fast, responsive, SEO-friendly reading.",
+  industry: "Cryptocurrency / Blockchain / Web3",
+  client: {
+    name: null,
+    anonymized: "Global cryptocurrency news and blockchain media platform",
+    nameApproved: false,
+  },
+  period: { start: "2019-05", end: "2022-03" },
+  role: "Software Developer",
+  featured: false,
+  order: 6,
+  problem:
+    "Global readers needed fast, responsive access to real-time crypto news, market trends, ICO information, press releases and Web3 educational content on desktop and mobile.",
+  solution:
+    "A React and Redux platform with dynamic news feeds, category-based content, article pages, search and trending sections, driven by REST APIs and built from reusable, performance-conscious components.",
+  stack: {
+    frontend: ["React", "JavaScript ES6+", "Redux", "HTML5", "CSS3", "SCSS", "Axios"],
+    backend: ["REST APIs"],
+    infrastructure: ["Git", "GitHub"],
+  },
+  features: [
+    {
+      group: "Content",
+      items: ["Dynamic news feeds", "Category-based content", "Article pages"],
+    },
+    { group: "Discovery", items: ["Search", "Trending crypto sections"] },
+    { group: "Experience", items: ["Responsive UI", "Reusable React components"] },
+    { group: "Data", items: ["REST API integration"] },
+  ],
+  workflow: [
+    "Browse Content",
+    "Request via REST API",
+    "Normalize Response",
+    "Update Redux State",
+    "Render Responsive Layout",
+    "Search & Filter",
+  ],
+  architectureGraph: "crypto-news",
+  related: [
+    { label: "React Architecture", href: "/architecture?module=react" },
+    { label: "Performance Lab", href: "/engineering#performance" },
+  ],
+  pending: [
+    "Confirm the project period: the projects document says May 2019 – Mar 2022, an earlier resume says Jan 2021 – Mar 2022",
+  ],
+};
+
+## Overview
+
+A large-scale cryptocurrency news and analytics platform delivering real-time crypto news, blockchain updates, market trends, ICO information, press releases and educational content about cryptocurrencies and Web3.
+
+## Context
+
+The platform serves global readers on desktop and mobile, so it had to be fast, responsive and SEO-friendly. Content is dynamic and API-driven, which put the focus on reusable components, API integration, responsive layouts and frontend performance.
+
+## Workflow
+
+<ProjectWorkflow />
+
+## Architecture
+
+<ProjectArchitecture />
+
+## Key features
+
+<ProjectFeatures />
+
+## My role
+
+Software Developer: designing and developing reusable, scalable UI components in React; integrating REST APIs for dynamic news feeds, article listings and market data; building responsive, mobile-friendly pages; and implementing Redux for state management and application data flow.
+
+## Engineering challenges
+
+- **Content-heavy rendering.** Feeds, article lists and trending sections render a lot of content per page.
+- **API-driven state.** Almost everything on screen comes from REST APIs and has to be kept in sync in the client.
+- **Responsive performance.** The experience had to stay fast on both desktop and mobile.
+- **Reusable component architecture.** Many page types share the same building blocks.
+- **API loading and error handling.** Every API-driven section needed clear loading and error states.
+
+## Decisions & tradeoffs
+
+| Decision                 | Why                             | Trade-off                 |
+| ------------------------ | ------------------------------- | ------------------------- |
+| React                    | Reusable component architecture | Large UI complexity       |
+| Redux                    | Centralized state               | State overhead            |
+| REST APIs                | Simple integration              | Network dependency        |
+| Axios                    | Consistent API client           | Client dependency         |
+| Performance optimization | Better user experience          | Implementation complexity |

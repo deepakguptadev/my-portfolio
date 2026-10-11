@@ -2,16 +2,20 @@ import { readdirSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-// Every note, so code blocks and tables in new articles get contrast and overflow checks.
-const notes = readdirSync("content/notes")
-  .filter((file) => file.endsWith(".mdx"))
-  .map((file) => `/notes/${file.replace(/\.mdx$/, "")}`);
+// Every case study and note, so diagrams, code blocks and tables in new content
+// get contrast and overflow checks.
+const mdxPaths = (collection: string) =>
+  readdirSync(`content/${collection}`)
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => `/${collection}/${file.replace(/\.mdx$/, "")}`);
+const projects = mdxPaths("projects");
+const notes = mdxPaths("notes");
 
 const pages = [
   "/about",
   "/experience",
   "/projects",
-  "/projects/quality-inspection-platform",
+  ...projects,
   "/architecture",
   "/engineering",
   "/skills",
@@ -56,10 +60,10 @@ test.describe("module pages", () => {
 
   test("project filter syncs with the URL", async ({ page }) => {
     await page.goto("/projects");
-    await page.getByRole("button", { name: "React", exact: true }).click();
-    await expect(page).toHaveURL(/tech=react/);
+    await page.getByRole("button", { name: "MongoDB", exact: true }).click();
+    await expect(page).toHaveURL(/tech=mongodb/);
     await expect(page.getByRole("status").filter({ hasText: "1 project" })).toBeVisible();
-    await page.goto("/projects?tech=react&tech=no-such-tech");
+    await page.goto("/projects?tech=mongodb&tech=no-such-tech");
     await expect(page.getByText("No projects match those technologies")).toBeVisible();
   });
 
@@ -74,11 +78,10 @@ test.describe("module pages", () => {
   });
 
   test("experience deep link expands the role", async ({ page }) => {
-    await page.goto("/experience#nagarro-engineer");
-    await expect(page.getByRole("button", { name: /^Engineer\s*Nagarro$/ })).toHaveAttribute(
-      "aria-expanded",
-      "true",
-    );
+    await page.goto("/experience#web-corporation");
+    await expect(
+      page.getByRole("button", { name: /^Software Developer\s*Web Corporation$/ }),
+    ).toHaveAttribute("aria-expanded", "true");
     await page.getByRole("button", { name: "Expand all" }).click();
     await expect(page.getByRole("button", { name: "Collapse all" })).toBeVisible();
   });

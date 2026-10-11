@@ -14,7 +14,7 @@ export function personJsonLd() {
     url: absolute("/"),
     email: `mailto:${profileLinks.email}`,
     sameAs: [profileLinks.linkedin, profileLinks.github],
-    address: { "@type": "PostalAddress", addressLocality: "Delhi NCR", addressCountry: "IN" },
+    address: { "@type": "PostalAddress", addressLocality: "New Delhi", addressCountry: "IN" },
     knowsAbout: [...profile.primaryStack, ...profile.focusAreas],
   };
 }

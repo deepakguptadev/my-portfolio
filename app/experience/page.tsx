@@ -18,7 +18,18 @@ export const metadata = pageMetadata({
   path: "/experience",
 });
 
-function Field({ label, items, pending }: { label: string; items: string[]; pending?: string }) {
+function Field({
+  label,
+  items,
+  pending,
+  complete,
+}: {
+  label: string;
+  items: string[];
+  pending?: string;
+  complete: boolean;
+}) {
+  if (items.length === 0 && complete) return null;
   return (
     <div>
       <h3 className="mb-2 eyebrow text-fg-muted">{label}</h3>
@@ -36,27 +47,47 @@ function Field({ label, items, pending }: { label: string; items: string[]; pend
 }
 
 function RoleDetails({ role }: { role: Role }) {
+  // An empty field is a gap only while the role still has pending facts;
+  // once nothing is pending, it was confirmed empty and is left out.
+  const complete = role.pending.length === 0;
   return (
     <div className="flex flex-col gap-6">
       {role.summary && <p className="text-body text-fg-secondary">{role.summary}</p>}
       <div className="grid gap-6 md:grid-cols-2">
-        <Field label="Responsibilities" items={role.responsibilities} pending="responsibilities" />
-        <Field label="Key achievements" items={role.achievements} pending="achievements" />
-        <Field label="Engineering focus" items={role.focus} pending="focus areas" />
-        <div>
-          <h3 className="mb-2 eyebrow text-fg-muted">Technologies</h3>
-          {role.technologies.length > 0 ? (
-            <ul className="flex flex-wrap gap-1.5">
-              {role.technologies.map((tech) => (
-                <li key={tech}>
-                  <Tag>{tech}</Tag>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <ContentRequired inline hint="technologies" />
-          )}
-        </div>
+        <Field
+          label="Responsibilities"
+          items={role.responsibilities}
+          pending="responsibilities"
+          complete={complete}
+        />
+        <Field
+          label="Key achievements"
+          items={role.achievements}
+          pending="achievements"
+          complete={complete}
+        />
+        <Field
+          label="Engineering focus"
+          items={role.focus}
+          pending="focus areas"
+          complete={complete}
+        />
+        {(role.technologies.length > 0 || !complete) && (
+          <div>
+            <h3 className="mb-2 eyebrow text-fg-muted">Technologies</h3>
+            {role.technologies.length > 0 ? (
+              <ul className="flex flex-wrap gap-1.5">
+                {role.technologies.map((tech) => (
+                  <li key={tech}>
+                    <Tag>{tech}</Tag>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <ContentRequired inline hint="technologies" />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

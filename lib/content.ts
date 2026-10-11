@@ -78,7 +78,7 @@ export const getProjectSlugs = () => listSlugs("projects");
 
 /** The client name only appears once Deepak has approved it. */
 export function displayClient(meta: ProjectMeta) {
-  return meta.client.nameApproved ? meta.client.name : meta.client.anonymized;
+  return (meta.client.nameApproved && meta.client.name) || meta.client.anonymized;
 }
 
 // ── Notes ────────────────────────────────────────────────────────────

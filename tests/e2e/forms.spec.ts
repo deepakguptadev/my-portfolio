@@ -71,6 +71,8 @@ test.describe("contact form", () => {
     await page.goto("/contact?type=full-time");
     await page.getByLabel(/^Name/).fill("Test Recruiter");
     await page.getByLabel(/^Email/).fill("recruiter@example.test");
+    await page.getByLabel(/^Phone/).fill("+91 98765 43210");
+    await page.getByLabel(/^Timeline/).selectOption("within-1-month");
     await page
       .getByLabel(/^Message/)
       .fill("We have a senior frontend role that looks like a great fit.");

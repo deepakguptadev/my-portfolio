@@ -95,15 +95,4 @@ describe("SystemGraph", () => {
     await user.click(screen.getByRole("button", { name: "Start" }));
     expect(screen.getByText("Step 1 of 7")).toBeInTheDocument();
   });
-
-  it("offers a list alternative", async () => {
-    const user = userEvent.setup();
-    render(<SystemGraph graph={graphs.hero} />);
-    await user.click(screen.getByRole("button", { name: "View as list" }));
-    expect(screen.getByRole("button", { name: "View as diagram" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
-    expect(screen.getByRole("list", { name: /layers/ })).toBeVisible();
-  });
 });

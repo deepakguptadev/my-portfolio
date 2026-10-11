@@ -1,0 +1,96 @@
+export const metadata = {
+  title: "Accounting & Reporting Solutions Application",
+  shortTitle: "Accounting & Reporting",
+  summary:
+    "A Next.js and Node.js application for non-profits covering fund management, grants, donations, investment tracking and financial reporting, backed by MongoDB.",
+  industry: "Non-profit / Fund Management",
+  client: {
+    name: null,
+    anonymized: "Non-profit consulting and software company",
+    nameApproved: false,
+  },
+  period: { start: "2025-01", end: "2025-06" },
+  role: "Senior Software Engineer",
+  featured: true,
+  order: 2,
+  problem:
+    "Non-profit teams needed one place to manage grants, donations, financial workflows and investment tracking, and to report on them accurately.",
+  solution:
+    "A React and Next.js web application with modules for fund management, donor records, grant tracking and financial reporting, backed by Node.js APIs and MongoDB and containerized with Docker.",
+  stack: {
+    frontend: ["React", "Next.js", "Redux", "Figma"],
+    backend: ["Node.js", "MongoDB"],
+    infrastructure: ["Docker", "Git"],
+  },
+  features: [
+    {
+      group: "Fund & donor management",
+      items: ["Fund management", "Donor records", "Grant tracking"],
+    },
+    { group: "Reporting", items: ["Financial reporting", "Dashboards"] },
+    { group: "Experience", items: ["Responsive UI", "Accessible workflows"] },
+    {
+      group: "Full-stack integration",
+      items: ["Node.js API integration", "MongoDB data workflows", "Unit testing"],
+    },
+  ],
+  workflow: [
+    "Open Dashboard",
+    "Choose Workflow",
+    "Manage Form State",
+    "Call Node.js API",
+    "Validate & Execute",
+    "Persist to MongoDB",
+    "Consolidated Reports",
+  ],
+  architectureGraph: "accounting-reporting",
+  related: [
+    { label: "Next.js Rendering", href: "/architecture?module=nextjs" },
+    { label: "API Architecture", href: "/architecture?module=api" },
+    { label: "Delivery Pipeline", href: "/architecture?module=delivery" },
+  ],
+  pending: [],
+};
+
+## Overview
+
+A full-stack web application for non-profit organizations covering fund management, grants, donations, financial workflows, investment tracking and reporting. It integrates with CRM and financial systems, giving teams a unified, transparent view of their accounting and fund data through dashboards and automated workflows.
+
+## Context
+
+The platform brings complex financial and fund-related workflows together in dashboards and structured modules. The frontend had to be responsive and accessible for non-profit staff, while a Node.js backend handled application workflows and MongoDB persisted the data.
+
+## Workflow
+
+<ProjectWorkflow />
+
+## Architecture
+
+<ProjectArchitecture />
+
+## Key features
+
+<ProjectFeatures />
+
+## My role
+
+Senior Software Engineer: designing UI wireframes in Figma and converting them into responsive React and Next.js components; implementing the fund management, donor records, grant tracking and financial reporting modules; simplifying complex financial tasks for non-profit staff with accessible interfaces and workflows; and writing unit tests to keep the modules reliable.
+
+## Engineering challenges
+
+- **Complex financial workflows.** Funds, grants, donations, investments and reporting each needed their own structured flow in one application.
+- **Client/server validation consistency.** Rules enforced in the forms had to match what the Node.js backend accepted.
+- **Data modeling.** Financial and fund data had to be shaped in MongoDB for both day-to-day workflows and reporting.
+- **Accessible, data-heavy interfaces.** Dense financial screens still had to be usable and accessible.
+- **API error handling.** Failed requests had to surface clearly in the UI.
+- **Reliable persistence and loading states.** Users needed to see when data was loading, saved or failed.
+
+## Decisions & tradeoffs
+
+| Decision        | Why                          | Trade-off                    |
+| --------------- | ---------------------------- | ---------------------------- |
+| Next.js + React | Structured full-stack web UI | Framework complexity         |
+| Node.js         | JavaScript-based backend     | Runtime constraints          |
+| MongoDB         | Flexible document model      | Reporting and query modeling |
+| Redux           | Predictable client state     | Global-state overhead        |
+| Docker          | Consistent environments      | Container overhead           |

@@ -28,19 +28,15 @@ test.describe("home", () => {
     ]) {
       await expect(snapshot.getByText(label, { exact: true })).toBeVisible();
     }
-    await expect(snapshot.getByText("Delhi NCR, India")).toBeVisible();
+    await expect(snapshot.getByText("New Delhi, India")).toBeVisible();
   });
 
-  test("hero diagram is interactive on desktop and a list on mobile", async ({ page }, info) => {
+  test("hero diagram is interactive at every viewport", async ({ page }) => {
     await page.goto("/");
-    if (info.project.name === "desktop") {
-      const apis = page
-        .getByRole("group", { name: /How I build/ })
-        .getByRole("button", { name: /^APIs,/ });
-      await apis.click();
-      await expect(apis).toHaveAttribute("aria-pressed", "true");
-    } else {
-      await expect(page.getByRole("list", { name: /How I build.*layers/ })).toBeVisible();
-    }
+    const apis = page
+      .getByRole("group", { name: /How I build/ })
+      .getByRole("button", { name: /^APIs,/ });
+    await apis.click();
+    await expect(apis).toHaveAttribute("aria-pressed", "true");
   });
 });

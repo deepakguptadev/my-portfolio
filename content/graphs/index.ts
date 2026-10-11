@@ -8,6 +8,14 @@ import {
 } from "./architecture";
 import { dnaGraph } from "./dna";
 import { heroGraph } from "./hero";
+import {
+  accountingReportingGraph,
+  cryptoNewsGraph,
+  digitalMarketingGraph,
+  healthTechGraph,
+  petEcommerceGraph,
+  reportingApplicationGraph,
+} from "./projects";
 import { qualityInspectionGraph } from "./quality-inspection";
 import { techEcosystemGraph } from "./tech-ecosystem";
 
@@ -15,6 +23,12 @@ export const graphs = {
   hero: heroGraph,
   dna: dnaGraph,
   "quality-inspection": qualityInspectionGraph,
+  "accounting-reporting": accountingReportingGraph,
+  "health-tech": healthTechGraph,
+  "reporting-application": reportingApplicationGraph,
+  "digital-marketing-engine": digitalMarketingGraph,
+  "crypto-news": cryptoNewsGraph,
+  "pet-ecommerce": petEcommerceGraph,
   "react-architecture": reactArchitectureGraph,
   "nextjs-rendering": nextjsRenderingGraph,
   "micro-frontends": microFrontendsGraph,
