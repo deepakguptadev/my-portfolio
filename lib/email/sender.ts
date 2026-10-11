@@ -45,7 +45,7 @@ class ConsoleSender implements EmailSender {
 
 export type EmailConfig = { sender: EmailSender; to: string; from: string };
 
-/** null when email isn't configured — the contact page then offers mailto only. */
+/** null when email isn't configured. */
 export function getEmailConfig(): EmailConfig | null {
   const to = process.env.CONTACT_TO_EMAIL;
   if (!to) return null;

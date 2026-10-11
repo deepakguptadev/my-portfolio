@@ -10,7 +10,15 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input, Textarea } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { contactSchema, MESSAGE_MAX, projectTypes, type ContactInput } from "@/lib/contact-schema";
+import {
+  asksForBudget,
+  budgets,
+  contactSchema,
+  MESSAGE_MAX,
+  projectTypes,
+  timelines,
+  type ContactInput,
+} from "@/lib/contact-schema";
 import { profileLinks } from "@/lib/profile-links";
 
 type Status = "idle" | "success" | "error";
@@ -18,7 +26,10 @@ type Status = "idle" | "success" | "error";
 const emptyValues: Partial<ContactInput> = {
   name: "",
   email: "",
+  phone: "",
   company: "",
+  budget: "",
+  timeline: "",
   message: "",
   website: "",
   startedAt: 0,
@@ -43,6 +54,7 @@ export function ContactForm() {
   });
 
   const messageLength = useWatch({ control, name: "message" })?.length ?? 0;
+  const showBudget = asksForBudget(useWatch({ control, name: "projectType" }));
 
   // Fill-time check and ?type= prefill happen on the client only.
   useEffect(() => {
@@ -91,14 +103,7 @@ export function ContactForm() {
         <Button
           variant="secondary"
           onClick={() => {
-            reset({
-              name: "",
-              email: "",
-              company: "",
-              message: "",
-              website: "",
-              startedAt: Date.now(),
-            });
+            reset({ ...emptyValues, startedAt: Date.now() });
             setStatus("idle");
           }}
         >
@@ -136,6 +141,13 @@ export function ContactForm() {
       <FormField label="Email" required error={errors.email?.message}>
         <Input type="email" autoComplete="email" disabled={isSubmitting} {...register("email")} />
       </FormField>
+      <FormField
+        label="Phone"
+        hint="Optional. Include your country code."
+        error={errors.phone?.message}
+      >
+        <Input type="tel" autoComplete="tel" disabled={isSubmitting} {...register("phone")} />
+      </FormField>
       <FormField label="Company" hint="Optional." error={errors.company?.message}>
         <Input autoComplete="organization" disabled={isSubmitting} {...register("company")} />
       </FormField>
@@ -147,6 +159,32 @@ export function ContactForm() {
           {...register("projectType")}
         />
       </FormField>
+      <FormField
+        label="Timeline"
+        hint="Optional. When would you like to start?"
+        error={errors.timeline?.message}
+      >
+        <Select
+          options={timelines}
+          placeholder="Choose a timeline"
+          disabled={isSubmitting}
+          {...register("timeline")}
+        />
+      </FormField>
+      {showBudget && (
+        <FormField
+          label="Budget"
+          hint="Optional. A rough range in USD."
+          error={errors.budget?.message}
+        >
+          <Select
+            options={budgets}
+            placeholder="Choose a budget"
+            disabled={isSubmitting}
+            {...register("budget")}
+          />
+        </FormField>
+      )}
       <FormField
         label="Message"
         required

@@ -9,6 +9,7 @@ import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { profile } from "@/content/profile";
+import { getContactSheet } from "@/lib/contact-sheet";
 import { getEmailConfig } from "@/lib/email/sender";
 import { profileLinks } from "@/lib/profile-links";
 import { pageMetadata } from "@/lib/seo";
@@ -21,7 +22,8 @@ export const metadata = pageMetadata({
 });
 
 export default function ContactPage() {
-  const formEnabled = getEmailConfig() !== null;
+  // Without anywhere to deliver a message, the page offers mailto only.
+  const formEnabled = getContactSheet() !== null || getEmailConfig() !== null;
 
   return (
     <>

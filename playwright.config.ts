@@ -33,8 +33,13 @@ export default defineConfig({
   ],
   webServer: {
     command: `npm run build && npm run start -- -p ${PORT}`,
-    // Console transport: the contact form renders and "sends" without real email.
-    env: { EMAIL_TRANSPORT: "console", CONTACT_TO_EMAIL: "inbox@example.test" },
+    // Console transport: the contact form renders and "sends" without real email. The empty
+    // sheet URL beats .env.local, so test messages never reach the real Google Sheet.
+    env: {
+      EMAIL_TRANSPORT: "console",
+      CONTACT_TO_EMAIL: "inbox@example.test",
+      CONTACT_SHEET_URL: "",
+    },
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
