@@ -16,8 +16,13 @@ test.describe("performance budgets", () => {
 
     const metrics = await page.evaluate(async () => {
       const resources = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
+      const [navigation] = performance.getEntriesByType(
+        "navigation",
+      ) as PerformanceNavigationTiming[];
+      // Only scripts the page loads itself: link prefetches start after `load`
+      // and would make the total depend on machine speed.
       const jsBytes = resources
-        .filter((r) => r.initiatorType === "script")
+        .filter((r) => r.initiatorType === "script" && r.startTime < navigation.loadEventStart)
         .reduce((sum, r) => sum + r.transferSize, 0);
 
       const observe = <T>(type: string, pick: (entries: PerformanceEntry[]) => T) =>

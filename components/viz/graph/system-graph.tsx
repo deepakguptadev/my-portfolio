@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, List, Network, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import { useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { computeEmphasis, describeConnections } from "@/lib/graph/emphasis";
@@ -17,7 +17,6 @@ import type { GraphNode, SystemGraphData } from "@/lib/schemas/graph";
 import { cn } from "@/lib/utils";
 import { GraphInspector } from "./graph-inspector";
 import { GraphLegend } from "./graph-legend";
-import { GraphListView } from "./graph-list-view";
 import { edgeKindMeta, nodeKindMeta } from "./kinds";
 
 type SystemGraphProps = {
@@ -30,7 +29,7 @@ type SystemGraphProps = {
   inspector?: "side" | "below" | "none";
   /** Show the "trace a request" stepper (needs graph.trace). */
   showTrace?: boolean;
-  /** Hide the toolbar (legend + list toggle) for compact embeds. */
+  /** Hide the toolbar (legend + reset) for compact embeds. */
   toolbar?: boolean;
   className?: string;
 };
@@ -82,7 +81,6 @@ export function SystemGraph({
   const [lensId, setLensId] = useState<string | null>(null);
   const [traceStep, setTraceStep] = useState<number | null>(null);
   const [focusId, setFocusId] = useState(graph.nodes[0].id);
-  const [listView, setListView] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const nodeRefs = useRef(new Map<string, HTMLButtonElement>());
 
@@ -181,12 +179,12 @@ export function SystemGraph({
       aria-label={graph.title}
       aria-describedby={instructionsId}
       data-spotlight="grid"
-      className="relative overflow-hidden rounded-md border border-line bg-canvas-alt bg-dot-grid"
+      className="relative min-w-[34rem] overflow-hidden rounded-md border border-line bg-canvas-alt bg-dot-grid"
       style={{ aspectRatio }}
     >
       <p id={instructionsId} className="sr-only">
         Diagram with {graph.nodes.length} nodes. Use arrow keys to move between nodes, Enter to
-        select a node and pin its details, Escape to clear. A list version is available.
+        select a node and pin its details, Escape to clear.
       </p>
       <div className="absolute inset-6 sm:inset-8">
         <svg
@@ -361,15 +359,20 @@ export function SystemGraph({
 
       <div
         className={cn(
-          inspector === "side" && "grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start",
+          inspector === "side" &&
+            "grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start",
           inspector === "below" && "flex flex-col gap-4",
         )}
       >
-        <div className={cn(listView ? "hidden" : "hidden sm:block")}>{canvas}</div>
-        <GraphListView graph={graph} className={cn(listView ? "block" : "sm:hidden")} />
-        {inspectorPanel && (
-          <div className={cn(!listView && "hidden sm:block")}>{inspectorPanel}</div>
-        )}
+        {/* Below the canvas's minimum width it scrolls sideways inside this frame;
+            inline-size containment keeps that width from stretching parent layouts. */}
+        <div className="min-w-0">
+          <div className="overflow-x-auto overscroll-x-contain contain-inline-size">{canvas}</div>
+          <p className="mt-2 text-caption text-fg-muted sm:hidden">
+            Swipe sideways to see the whole diagram.
+          </p>
+        </div>
+        {inspectorPanel}
       </div>
 
       {toolbar && (
@@ -381,16 +384,6 @@ export function SystemGraph({
                 <RotateCcw aria-hidden /> Reset
               </Button>
             )}
-            <Button
-              size="sm"
-              variant="ghost"
-              aria-pressed={listView}
-              onClick={() => setListView((value) => !value)}
-              className="hidden sm:inline-flex"
-            >
-              {listView ? <Network aria-hidden /> : <List aria-hidden />}
-              {listView ? "View as diagram" : "View as list"}
-            </Button>
           </div>
         </div>
       )}

@@ -72,13 +72,18 @@ export const projectMetaSchema = z.object({
   shortTitle: z.string(),
   summary: z.string().max(200),
   industry: z.string(),
-  client: z.object({
-    name: z.string(),
-    /** Public label used until naming the client is confirmed. */
-    anonymized: z.string(),
-    /** Only true once Deepak confirms the client may be named. */
-    nameApproved: z.boolean(),
-  }),
+  client: z
+    .object({
+      /** null when the client's name isn't documented. */
+      name: z.string().nullable(),
+      /** Public label used until naming the client is confirmed. */
+      anonymized: z.string(),
+      /** Only true once Deepak confirms the client may be named. */
+      nameApproved: z.boolean(),
+    })
+    .refine((client) => !client.nameApproved || client.name !== null, {
+      message: "An approved client needs a name",
+    }),
   period: period.nullable(),
   role: z.string().nullable(),
   featured: z.boolean().default(false),

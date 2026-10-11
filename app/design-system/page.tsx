@@ -318,7 +318,7 @@ export default async function DesignSystemPage() {
               { label: "Experience", value: "7+ Years" },
               { label: "Primary stack", value: "React / Next.js / TypeScript" },
               { label: "Backend", value: "Node.js / Express / NestJS" },
-              { label: "Location", value: "Delhi NCR" },
+              { label: "Location", value: "New Delhi" },
               { label: "Availability", value: <Badge tone="success">Immediate Joiner</Badge> },
               { label: "Work mode", value: "Remote / Hybrid / Relocation" },
             ]}

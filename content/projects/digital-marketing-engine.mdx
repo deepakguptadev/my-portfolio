@@ -1,0 +1,92 @@
+export const metadata = {
+  title: "Digital Marketing Engine",
+  shortTitle: "Digital Marketing Engine",
+  summary:
+    "A centralized platform for creating, scheduling and launching social-media campaigns, built as React micro frontends over Spring Boot microservices.",
+  industry: "Digital Marketing",
+  client: {
+    name: "Mastercard",
+    anonymized: "Global payments brand",
+    nameApproved: false,
+  },
+  period: { start: "2022-04", end: "2023-06" },
+  role: "Senior Software Engineer",
+  featured: true,
+  order: 5,
+  problem:
+    "Marketing teams needed to create, manage and launch campaigns across multiple social-media platforms from a single interface, with end-to-end control and visibility.",
+  solution:
+    "A digital marketing engine of domain-based Spring Boot microservices, built API-first and cloud-native, with React micro frontends for campaign management, scheduling, targeting, channel integration, analytics and user management.",
+  stack: {
+    frontend: ["React", "Redux", "Material UI", "Micro Frontends", "Charts"],
+    backend: ["Java 8", "Spring Boot", "Microservices", "MySQL"],
+    infrastructure: ["Jenkins", "Salesforce", "Git"],
+  },
+  features: [
+    {
+      group: "Campaigns",
+      items: ["Campaign management", "Content scheduling", "Audience targeting"],
+    },
+    { group: "Channels & insight", items: ["Channel integration", "Performance analytics"] },
+    { group: "Administration", items: ["User management"] },
+    { group: "Architecture", items: ["Micro Frontends", "Microservices"] },
+  ],
+  workflow: [
+    "Open Dashboard",
+    "Create Campaign",
+    "Select Audience & Content",
+    "Call Domain APIs",
+    "Schedule & Launch",
+    "Analyze Performance",
+  ],
+  architectureGraph: "digital-marketing-engine",
+  related: [
+    { label: "Micro Frontends", href: "/architecture?module=micro-frontends" },
+    { label: "API Architecture", href: "/architecture?module=api" },
+    { label: "Delivery Pipeline", href: "/architecture?module=delivery" },
+  ],
+  pending: ["Confirm permission to name the client publicly"],
+};
+
+## Overview
+
+A centralized digital marketing engine that lets marketing teams create, manage and launch campaigns across multiple social-media platforms. It brings campaign management, content scheduling, audience targeting, channel integration, performance analytics and user management into one interface.
+
+## Context
+
+The engine is made of domain-based microservices built on an API-first, cloud-native architecture. Microservices talk to the frontend applications and to each other through RESTful APIs, and the frontend is split into domain-oriented micro frontends.
+
+## Workflow
+
+<ProjectWorkflow />
+
+## Architecture
+
+<ProjectArchitecture />
+
+## Key features
+
+<ProjectFeatures />
+
+## My role
+
+Senior Software Engineer: designing UI wireframes and translating them into production code, and debugging and fixing issues during development.
+
+## Engineering challenges
+
+- **Scaling frontend domains.** Campaigns, scheduling, targeting, channels, analytics and users each formed their own frontend domain.
+- **Managing service boundaries.** Each backend domain lived in its own microservice.
+- **Cross-domain communication.** Micro frontends and microservices had to coordinate across domains.
+- **API contract consistency.** Many frontends and services depended on the same RESTful contracts.
+- **Distributed-service failures.** A failing service had to surface clearly in the UI.
+- **Shared UI versus domain autonomy.** Consistent UI had to coexist with independently developed domains.
+
+## Decisions & tradeoffs
+
+| Decision        | Why                                  | Trade-off                         |
+| --------------- | ------------------------------------ | --------------------------------- |
+| Micro Frontends | Independent domain and team delivery | Runtime and deployment complexity |
+| Microservices   | Backend domain isolation             | Distributed complexity            |
+| API-first       | Clear contracts                      | Governance required               |
+| Redux           | Predictable state                    | Potential coupling                |
+| Automated CI/CD | Repeatable delivery                  | Pipeline maintenance              |

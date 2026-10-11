@@ -30,7 +30,7 @@ const layers = [
     tools: ["React.js", "Next.js", "TypeScript", "Design Systems", "Accessibility"],
   },
   { label: "State & data", tools: ["Redux Toolkit", "React Query", "Apollo Client"] },
-  { label: "APIs", tools: ["REST", "GraphQL", "WebSockets", "Socket.IO"] },
+  { label: "APIs", tools: ["REST", "GraphQL", "WebSocket", "Socket.IO"] },
   {
     label: "Services",
     tools: ["Node.js", "Express.js", "NestJS", "Microservices", "Authentication & Authorization"],

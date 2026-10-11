@@ -12,8 +12,8 @@ describe("content", () => {
   it("loads and validates every structured content module", () => {
     expect(profile.name).toBe("Deepak Gupta");
     expect(experience.length).toBeGreaterThan(0);
-    expect(skills.length).toBe(9);
-    expect(Object.keys(graphs)).toHaveLength(9);
+    expect(skills.length).toBe(12);
+    expect(Object.keys(graphs)).toHaveLength(15);
     expect(architecture.modules.map((m) => m.id)).toEqual([
       "react",
       "nextjs",

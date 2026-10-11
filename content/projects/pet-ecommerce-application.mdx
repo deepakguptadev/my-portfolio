@@ -1,0 +1,93 @@
+export const metadata = {
+  title: "Pet Food & Accessories Ecommerce Application",
+  shortTitle: "Pet Ecommerce",
+  summary:
+    "An ecommerce application for pet food and accessories with a React and Next.js frontend over domain-based Spring Boot microservices and MySQL.",
+  industry: "Ecommerce",
+  client: {
+    name: null,
+    anonymized: "Ecommerce company",
+    nameApproved: false,
+  },
+  period: { start: "2019-05", end: "2022-03" },
+  role: "Software Developer",
+  featured: false,
+  order: 7,
+  problem:
+    "Customers needed a reliable shopping experience for pet food and accessories, backed by many domain services working together.",
+  solution:
+    "A React and Next.js storefront with Redux and Material UI, talking through RESTful APIs to domain-based Spring Boot microservices built API-first and cloud-native, with MySQL persistence.",
+  stack: {
+    frontend: ["React", "Next.js", "Redux", "Material UI"],
+    backend: ["Java 8", "Spring Boot", "Microservices", "MySQL"],
+    infrastructure: ["Git"],
+  },
+  features: [
+    {
+      group: "Storefront",
+      items: ["Pet food and accessories catalog", "Purchase workflow", "Next.js frontend"],
+    },
+    { group: "State & data", items: ["Redux state management", "REST API integration"] },
+    { group: "Backend", items: ["Microservices backend", "MySQL persistence"] },
+    { group: "Quality", items: ["Unit testing", "Debugging"] },
+  ],
+  workflow: [
+    "Browse Products",
+    "Fetch via APIs",
+    "Purchase Workflow",
+    "Microservices Process",
+    "Persist to MySQL",
+    "Show Result",
+  ],
+  architectureGraph: "pet-ecommerce",
+  related: [
+    { label: "Next.js Rendering", href: "/architecture?module=nextjs" },
+    { label: "API Architecture", href: "/architecture?module=api" },
+  ],
+  pending: [
+    "Confirm the project period: the projects document says May 2019 – Mar 2022, earlier resumes say May 2019 – Dec 2020 or Jan 2021 – Mar 2022",
+  ],
+};
+
+## Overview
+
+A pet food and accessories ecommerce application built from domain-based microservices on an API-first, cloud-native architecture. The frontend uses React, Next.js and Redux; Spring Boot microservices and MySQL support the backend workflows.
+
+## Context
+
+The storefront talks to several backend services, and the services talk to each other through RESTful APIs, so ecommerce operations depend on a reliable data flow across all of them.
+
+## Workflow
+
+<ProjectWorkflow />
+
+## Architecture
+
+<ProjectArchitecture />
+
+## Key features
+
+<ProjectFeatures />
+
+## My role
+
+Software Developer: designing UI wireframes and translating them into production code, writing unit tests for quality and reliability, and debugging and fixing issues during development.
+
+## Engineering challenges
+
+- **Distributed backend integration.** One storefront depended on many domain microservices.
+- **State management.** Product and purchase state had to stay consistent in the client.
+- **API reliability.** The purchase workflow had to cope with slow or failing services.
+- **Data consistency.** Business data had to stay consistent across services and MySQL.
+- **Reusable UI architecture.** Product and purchase screens share many components.
+- **Production debugging.** Issues could come from the UI or any of the services behind it.
+
+## Decisions & tradeoffs
+
+| Decision        | Why                           | Trade-off              |
+| --------------- | ----------------------------- | ---------------------- |
+| Next.js + React | Structured, reusable frontend | Framework complexity   |
+| Redux           | Predictable state             | State overhead         |
+| Spring Boot     | Enterprise backend            | Service complexity     |
+| Microservices   | Domain separation             | Distributed operations |
+| MySQL           | Relational consistency        | Schema management      |

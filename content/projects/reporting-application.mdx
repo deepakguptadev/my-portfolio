@@ -1,0 +1,92 @@
+export const metadata = {
+  title: "Reporting Application",
+  shortTitle: "Reporting Application",
+  summary:
+    "An enterprise reporting application that turns distributed service data into business intelligence with React and Next.js, .NET Core APIs, MySQL and Power BI.",
+  industry: "Data Analytics / Enterprise Reporting",
+  client: {
+    name: null,
+    anonymized: "Data and system management company",
+    nameApproved: false,
+  },
+  period: { start: "2023-07", end: "2024-05" },
+  role: "Senior Software Engineer",
+  featured: false,
+  order: 4,
+  problem:
+    "Teams needed operational insight from data spread across many interconnected services in a complex enterprise environment.",
+  solution:
+    "A React and Next.js reporting frontend over .NET Core APIs and MySQL, with Power BI providing visualization, turning distributed service data into actionable business intelligence.",
+  stack: {
+    frontend: ["React", "Next.js", "Redux", "Material UI"],
+    backend: ["C#", ".NET Core", "MySQL"],
+    infrastructure: ["Power BI", "Azure", "Git"],
+  },
+  features: [
+    {
+      group: "Reporting",
+      items: ["Reporting dashboards", "Data visualization", "Power BI integration"],
+    },
+    { group: "Integration", items: ["API integration"] },
+    { group: "Experience", items: ["Responsive UI"] },
+    { group: "Quality", items: ["Unit testing", "Debugging and issue resolution"] },
+  ],
+  workflow: [
+    "Service Data",
+    "Backend APIs",
+    "Request Report Data",
+    "Process in .NET Core",
+    "Query MySQL",
+    "Visualize in Power BI",
+    "Business Insights",
+  ],
+  architectureGraph: "reporting-application",
+  related: [
+    { label: "Next.js Rendering", href: "/architecture?module=nextjs" },
+    { label: "API Architecture", href: "/architecture?module=api" },
+    { label: "Performance Lab", href: "/engineering#performance" },
+  ],
+  pending: [],
+};
+
+## Overview
+
+An enterprise reporting application providing data analytics, integration and visualization across complex, interconnected services. React, Power BI, .NET Core, MySQL and Azure work together to turn distributed service data into actionable business intelligence.
+
+## Context
+
+The application combines an enterprise frontend with backend APIs, relational data and BI reporting, so the work spans the full data flow rather than a frontend-only dashboard.
+
+## Workflow
+
+<ProjectWorkflow />
+
+## Architecture
+
+<ProjectArchitecture />
+
+## Key features
+
+<ProjectFeatures />
+
+## My role
+
+Senior Software Engineer: designing UI wireframes and translating them into production code, writing unit tests for quality and reliability, and debugging and fixing issues during development.
+
+## Engineering challenges
+
+- **Distributed enterprise data.** Reporting data came from many interconnected services.
+- **Data-heavy visualization.** Dashboards had to present large amounts of data clearly.
+- **Frontend/backend contract management.** The React frontend and the .NET Core APIs had to agree on the shape of reporting data.
+- **Reporting performance.** Data-heavy views still had to load and respond quickly.
+- **Debugging across application layers.** Issues could originate in the UI, the APIs, the database or the reporting layer.
+
+## Decisions & tradeoffs
+
+| Decision        | Why                            | Trade-off              |
+| --------------- | ------------------------------ | ---------------------- |
+| React / Next.js | Structured, reusable UI        | Application complexity |
+| Redux           | Predictable state              | Global-state overhead  |
+| .NET Core       | Enterprise backend integration | Polyglot stack         |
+| MySQL           | Relational persistence         | Schema management      |
+| Power BI        | Advanced BI capabilities       | Integration dependency |

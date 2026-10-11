@@ -1,0 +1,96 @@
+export const metadata = {
+  title: "Health-Tech and Analytics Application",
+  shortTitle: "Health-Tech Analytics",
+  summary:
+    "A React application for healthcare professionals with digital assessments, QR/barcode record lookup and medical-record validation, backed by Spring Boot microservices.",
+  industry: "Healthcare",
+  client: {
+    name: "Amplify Health",
+    anonymized: "Digital healthcare services company",
+    nameApproved: false,
+  },
+  period: { start: "2024-06", end: "2024-12" },
+  role: "Senior Software Engineer",
+  featured: false,
+  order: 3,
+  problem:
+    "Healthcare teams needed structured, reliable workflows to capture clinical and operational data accurately, and to run quality checks, patient-related evaluations and medical-record validation.",
+  solution:
+    "A React and Redux application with interactive digital assessment screens, QR/barcode scanning to load records, assets or forms, and a tablet-ready UI, integrated with Spring Boot microservices and MySQL.",
+  stack: {
+    frontend: ["React", "Redux", "Figma"],
+    backend: ["Java 8", "Spring Boot", "Microservices", "MySQL"],
+    infrastructure: ["Git"],
+  },
+  features: [
+    {
+      group: "Assessments & data capture",
+      items: ["Digital assessment screens", "Clinical and operational data capture"],
+    },
+    {
+      group: "Records",
+      items: ["QR / barcode scanning", "Medical-record validation workflows"],
+    },
+    { group: "Devices", items: ["Responsive tablet and handheld UI"] },
+    { group: "Quality", items: ["Unit testing"] },
+  ],
+  workflow: [
+    "Open App",
+    "Scan or Select Record",
+    "Load from Services",
+    "Digital Assessment",
+    "Validate",
+    "Submit & Persist",
+  ],
+  architectureGraph: "health-tech",
+  related: [
+    { label: "React Architecture", href: "/architecture?module=react" },
+    { label: "API Architecture", href: "/architecture?module=api" },
+  ],
+  pending: [
+    "Confirm permission to name the client publicly",
+    "Confirm the project period: the projects document says Jun 2024 – Dec 2025, the resume says Jun – Dec 2024",
+  ],
+};
+
+## Overview
+
+A health-tech application that improves clinical workflows, operational efficiency and data accuracy for healthcare professionals. It brings together clinical, operational, financial and behavioural data to support quality checks, patient-related evaluations and medical-record validation, helping teams capture data accurately through interactive interfaces, digital assessment tools and offline-ready workflows.
+
+## Context
+
+Healthcare users need structured, reliable workflows for capturing and evaluating data, often on tablets and handheld devices. The client is React and Redux; the backend is Spring Boot microservices with MySQL.
+
+## Workflow
+
+<ProjectWorkflow />
+
+## Architecture
+
+<ProjectArchitecture />
+
+## Key features
+
+<ProjectFeatures />
+
+## My role
+
+Senior Software Engineer: designing healthcare-focused UI wireframes in Figma and turning them into responsive, accessible React components; implementing interactive digital assessment screens for capturing clinical and operational data accurately and consistently; enabling QR/barcode scanning to quickly load patient records, medical assets or clinical evaluation forms; keeping the experience responsive and mobile-optimized for tablets and handheld devices; and writing unit tests for reliability and data accuracy.
+
+## Engineering challenges
+
+- **High data-accuracy requirements.** Clinical and operational data feeds evaluations and record validation, so capture had to be accurate and consistent.
+- **Complex assessment workflows.** Digital assessments had to capture structured clinical and operational data.
+- **Mobile and tablet interaction.** Healthcare workers use tablets and handheld devices, so every screen had to work there.
+- **Distributed service integration.** The frontend depended on several Spring Boot microservices.
+- **Consistent validation and error states.** Users needed the same, clear feedback across every assessment and record workflow.
+
+## Decisions & tradeoffs
+
+| Decision            | Why                               | Trade-off                    |
+| ------------------- | --------------------------------- | ---------------------------- |
+| React + Redux       | Reusable UI and predictable state | Workflow complexity          |
+| Spring Boot         | Enterprise backend                | Distributed-service overhead |
+| Microservices       | Domain separation                 | Operational complexity       |
+| MySQL               | Structured data                   | Schema evolution             |
+| API-driven workflow | Clear service boundary            | Network dependency           |
